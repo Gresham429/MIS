@@ -48,7 +48,7 @@ function addItem(e) {
     return false;
 }
 
-  
+ 
 function removeItem(e) {
     e.preventDefault();
     if (e.target.classList.contains("delete")) {
