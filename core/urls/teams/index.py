@@ -1,6 +1,6 @@
 from django.urls import path, include
-from core.views.teams.index import index
+from core.views.teams.index import teams_index
 
 urlpatterns = [
-    path('', index, name="index"),
+    path('', teams_index, name="teams_index"),
 ]

@@ -1,0 +1,23 @@
+<!-- navbar.html -->
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../static/css/base/navbar.css">
+    </head>
+    
+    <body>
+        <div class="navbar">
+            <nav>
+                <ul style="justify-content: flex-start">
+                    <li><a href="{% url 'homepage_index' %}">首页</a></li>
+                    <li><a href="{% url 'teams_index' %}">团队</a></li>
+                    <li><a href="{% url 'devices_index' %}#">设备</a></li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+
+</html>

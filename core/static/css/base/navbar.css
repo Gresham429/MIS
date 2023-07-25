@@ -1,0 +1,43 @@
+/* navbar.css */
+body, h1, h2, h3, h4, h5, h6, p, ul, li {
+    margin: 0;
+    padding: 0;
+  }  
+
+.navbar {
+    background-color: rgb(33,37,41);
+    padding: 0;
+    margin: 0;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%; /* 设置宽度为100% */
+    height: 80px; /* 设置高度为50像素 */
+    display: flex;
+    flex-direction: row; /* 从左往右排布 */
+}
+
+.navbar li {
+    padding: 0;
+    margin: 15px; /*设置每个li的间距*/
+    display: flex; /* 使用 Flex 布局 */
+    align-items: center; /* 垂直居中 */
+}
+
+.navbar a {
+    color: white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: larger;
+    font-weight: bold;
+    font-style: italic;
+    transition: 0.2s; /* 添加平滑过渡效果 */
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #555;
+    transform: scale(1.2); /* 鼠标悬停时文字放大 */
+}
