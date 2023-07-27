@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+</head>
+
+<body>
+    <h1>登录</h1>
+    <a href="{% url 'homepage_index' %}">
+        <button>回到主页</button>
+    </a>
+
+    <form id="loginForm" action="" method="POST">
+        <!-- 登录表单 -->
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="username">
+        <input type="password" name="password" placeholder="password">
+        <button type="submit">登录</button>
+        <!-- 显示错误信息 -->
+        <p class="error-message" id="loginErrorMessage">
+            {% if fault %}
+            {{ fault }}
+            {% endif %}
+        </p>
+    </form>
+</body>
+
+</html>

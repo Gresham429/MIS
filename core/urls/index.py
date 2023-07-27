@@ -1,7 +1,11 @@
 from django.urls import path, include
+from core.views.nav.index import sign_in, sign_up, sign_out
 
 urlpatterns = [
-    path("homepage/", include("core.urls.homepage.index")),
+    path("", include("core.urls.homepage.index")),
+    path("signin/", sign_in, name="sign_in"),
+    path("signup/", sign_up, name="sign_up"),
+    path("signout/", sign_out, name="sign_out"),
     path("teams/", include("core.urls.teams.index")),
     path("devices/", include("core.urls.devices.index")),
 ]

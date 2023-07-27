@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from core.views.homepage.index import homepage_index
 
 urlpatterns = [

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <nav>
+    {% if user.is_authenticated %}
+    <!-- 登出按钮 -->
+    <a href="{% url 'sign_out' %}">
+      <button id="signOutButton">登出</button>
+    </a>
+    {% else %}
+    <!-- 登录按钮 -->
+    <a href="{% url 'sign_in' %}">
+      <button id="loginButton">登录</button>
+    </a>
+    <!-- 注册按钮 -->
+    <a href="{% url 'sign_up' %}">
+      <button id="registerButton">注册</button>
+    </a>
+    {% endif %}
+  </nav>
+</body>
+
+</html>
