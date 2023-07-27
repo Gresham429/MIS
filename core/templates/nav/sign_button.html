@@ -9,19 +9,33 @@
 <body>
   <nav>
     {% if user.is_authenticated %}
+    
+    <!-- 显示用户的头像或者白色圆形 -->
+    {% if avatar_url %}
+    <div style="display: inline-block; max-width: 50px; max-height: 50px;">
+        <img src="{{ avatar_url }}" alt="头像" style="width: 100%; height: 100%; border-radius: 50%;">
+    </div>
+    {% else %}
+    <div style="display: inline-block; width: 50px; height: 50px; border-radius: 50%; background-color: white;"></div>
+    {% endif %}
+
     <!-- 登出按钮 -->
     <a href="{% url 'sign_out' %}">
       <button id="signOutButton">登出</button>
     </a>
+    
     {% else %}
+    
     <!-- 登录按钮 -->
     <a href="{% url 'sign_in' %}">
       <button id="loginButton">登录</button>
     </a>
+    
     <!-- 注册按钮 -->
     <a href="{% url 'sign_up' %}">
       <button id="registerButton">注册</button>
     </a>
+    
     {% endif %}
   </nav>
 </body>

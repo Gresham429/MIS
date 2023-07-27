@@ -5,27 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录</title>
+    <link rel="stylesheet" href="../../static/css/nav/signin.css"> <!-- 引入样式表 -->
 </head>
 
 <body>
-    <h1>登录</h1>
-    <a href="{% url 'homepage_index' %}">
-        <button>回到主页</button>
-    </a>
+    <div class="login-container">
+        <h1>登录</h1>
 
-    <form id="loginForm" action="" method="POST">
-        <!-- 登录表单 -->
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="username">
-        <input type="password" name="password" placeholder="password">
-        <button type="submit">登录</button>
-        <!-- 显示错误信息 -->
-        <p class="error-message" id="loginErrorMessage">
-            {% if fault %}
-            {{ fault }}
-            {% endif %}
-        </p>
-    </form>
+        <form id="loginForm" action="" method="POST">
+            <!-- 登录表单 -->
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">用户名:</label>
+                <input type="text" id="username" name="username" placeholder="请输入用户名">
+            </div>
+            <div class="form-group">
+                <label for="password">密码:</label>
+                <input type="password" id="password" name="password" placeholder="请输入密码">
+            </div>
+            <div class="form-group">
+                <button type="submit">登录</button>
+            </div>
+            <!-- 显示错误信息 -->
+            <p class="error-message" id="loginErrorMessage">
+                {% if fault %}
+                {{ fault }}
+                {% endif %}
+            </p>
+        </form>
+        <a href="{% url 'homepage_index' %}">
+            <button>回到首页</button>
+        </a>
+    </div>
 </body>
 
 </html>

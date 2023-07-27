@@ -8,4 +8,5 @@ urlpatterns = [
     path("signout/", sign_out, name="sign_out"),
     path("teams/", include("core.urls.teams.index")),
     path("devices/", include("core.urls.devices.index")),
+    path("myspace/", include("core.urls.myspace.index")),
 ]

@@ -5,32 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>注册</title>
+    <link rel="stylesheet" href="../../static/css/nav/signup.css">
 </head>
 
 <body>
-    <h1>注册</h1>
+    <div class="signup-container">
+        <h1>注册</h1>
 
-    <form id="registerForm" action="" method="POST">
-        {% csrf_token %}
-        {% for field in registered_form %}
-        <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
-        {{ field }}
-        <br>
-        {% if field.errors %}
-        <ul>
-            {% for error in field.errors %}
-            <li>{{ error }}</li>
+        <form id="registerForm" action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in registered_form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+            {{ field }}
+            <br>
+            {% if field.errors %}
+            <ul>
+                {% for error in field.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
             {% endfor %}
-        </ul>
-        {% endif %}
-        {% endfor %}
-
-
-        <button type="submit">注册</button>
+            
+            <button type="submit">注册</button>
+        </form>
         <a href="{% url 'homepage_index' %}">
             <button>回到主页</button>
         </a>
-    </form>
+    </div>
 </body>
 
 </html>
