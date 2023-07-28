@@ -1,0 +1,73 @@
+/* 隐藏栏目 */
+.side-panel {
+    width: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background-color: #f1f1f1;
+    overflow-x: hidden;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+}
+
+/* 将样式应用于 side-panel 内的链接（<a>标签） */
+.side-panel a {
+    margin-top: 10px;
+    width: 90px;
+    height: 33px;
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px; /* 添加圆角边框 */
+}
+
+
+/* 展示栏目 */
+.show {
+    width: 300px;
+}
+
+/* 头像容器样式 */
+.avatar-container {
+    display: inline-block;
+    max-width: 50px;
+    max-height: 50px;
+    cursor: pointer;
+}
+
+/* 头像样式 */
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+/* 头像占位符样式 */
+.avatar-placeholder {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+/* 登出按钮样式 */
+#signOutButton {
+    width: 90px;
+    height: 33px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+/* 鼠标悬浮样式 */
+#signOutButton:hover {
+    background-color: #007A8B;
+}

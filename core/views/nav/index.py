@@ -25,13 +25,9 @@ def sign_in(request):
             else:
                 avatar_url = ordinary_user.avatar.url if ordinary_user.avatar else None
 
-            print(avatar_url)
-            # 创建上下文
-            context = {
-                'avatar_url': avatar_url,
-            }
-
-            return render(request, 'homepage/homepage.html', context)
+            #创建请求的会话数据并且重定向到主页
+            request.session['avatar_url'] = avatar_url
+            return redirect('homepage_index')
     else:
         return render(request, "nav/signin.html")
 
@@ -60,12 +56,9 @@ def sign_up(request):
             #获取用户头像
             avatar_url = ordinary_user.avatar.url if user.ordinaryuser.avatar else None
 
-            #创建上下文
-            context = {
-                'avatar_url': avatar_url,
-            }
-
-            return render(request, 'homepage/homepage.html', context)
+            #创建请求的会话数据并且重定向到主页
+            request.session['avatar_url'] = avatar_url
+            return redirect('homepage_index')
 
     else:
         registered_form = OrdinaryUserCreationForm()

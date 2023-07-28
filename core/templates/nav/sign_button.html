@@ -4,40 +4,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 加载静态文件 -->
+  {% load static %}
+
+  <!-- 引入自定义 CSS 文件 -->
+  <link rel="stylesheet" href="{% static 'css/nav/sign_button.css' %}">
 </head>
 
 <body>
   <nav>
+    <!-- 如果用户已登录 -->
     {% if user.is_authenticated %}
-    
+
     <!-- 显示用户的头像或者白色圆形 -->
     {% if avatar_url %}
-    <div style="display: inline-block; max-width: 50px; max-height: 50px;">
-        <img src="{{ avatar_url }}" alt="头像" style="width: 100%; height: 100%; border-radius: 50%;">
+    <div class="avatar-container" onclick="toggleSidePanel()">
+      <img src="{{ avatar_url }}" alt="头像" class="avatar-img">
     </div>
     {% else %}
-    <div style="display: inline-block; width: 50px; height: 50px; border-radius: 50%; background-color: white;"></div>
+    <div class="avatar-container" onclick="toggleSidePanel()">
+      <div class="avatar-placeholder"></div>
+    </div>
     {% endif %}
 
     <!-- 登出按钮 -->
-    <a href="{% url 'sign_out' %}">
-      <button id="signOutButton">登出</button>
-    </a>
-    
+    <div class="side-panel" id="sidePanel">
+      <a href="{% url 'sign_out' %}">
+        <button id="signOutButton">登出</button>
+      </a>
+    </div>
+
+    <!-- 如果用户未登录 -->
     {% else %}
-    
+
     <!-- 登录按钮 -->
     <a href="{% url 'sign_in' %}">
       <button id="loginButton">登录</button>
     </a>
-    
+
     <!-- 注册按钮 -->
     <a href="{% url 'sign_up' %}">
       <button id="registerButton">注册</button>
     </a>
-    
+
     {% endif %}
   </nav>
+
+  <!-- JavaScript控制右侧栏目 -->
+  <script>
+    // 点击头像时显示右侧栏目
+    function toggleSidePanel() {
+      // 获取右侧栏目元素
+      var sidePanel = document.getElementById("sidePanel");
+      // 显示右侧栏目
+      sidePanel.classList.toggle("show");
+    }
+  </script>
 </body>
 
 </html>
