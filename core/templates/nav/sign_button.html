@@ -13,7 +13,7 @@
 </head>
 
 <body>
-  <nav>
+  <nav style="margin-right: 40px;">
     <!-- 如果用户已登录 -->
     {% if user.is_authenticated %}
 
@@ -28,8 +28,10 @@
     </div>
     {% endif %}
 
-    <!-- 登出按钮 -->
+    <!-- 用户右侧栏目 -->
     <div class="side-panel" id="sidePanel">
+      <a href="{% url 'user_profile' username=username %}">个人中心</a>
+      <hr class="divider">
       <a href="{% url 'sign_out' %}">
         <button id="signOutButton">登出</button>
       </a>

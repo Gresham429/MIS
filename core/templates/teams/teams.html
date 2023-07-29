@@ -1,72 +1,16 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href=
-			   "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-		      integrity=
-		      "sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-		      crossorigin="anonymous">
-		<link rel="stylesheet" href="../../static/css/basic.css">
-		<script src="../../static/js/dist/core.js"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>团队</title>
+    </head>
 
-		<title>团队</title>
-	</head>
+    <body>
+        {% include '../nav/navbar.html' %}
 
-	<body>
-		<header class="text-white p-5" style="background-color: rgb(36, 41, 47);">
-			<div class="container">
-				<div class="row align-items-center">
-					<div class="col-lg-10 col-md-10 col-sm-10">
-						<font face="Comic sans MS" 
-						      size="11" color="white">
-							<strong>Mis Homepage</strong>
-						</font>    
-					</div>
-					<div class="col-lg-2 col-md-2 col-sm-2 text-right">
-						<button class="btn btn-light ml-auto" style="background-color: rgb(36, 41, 47); color: white; border-width: 2px;" id="loginButton">
-							<font face="Comic sans MS">
-								<strong>login</strong>
-							</font>    
-						</button>
-					</div>
-				</div>
-			</div>
-		</header>
+        <h1>这里是团队</h1>
+    </body>
 
-		<div class="container mt-3">
-			<h2>Add Teams</h2>
-
-
-			<form id="addForm">
-				<div class="form-group row align-items-center">
-					<label for="name" class="col-sm-2 col-form-label label-center label-large">队名</label>
-					<div class="col-sm-10">
-						<input type="text" onkeyup="toggleButton(this, 'submit')" class="form-control" id="item" placeholder="队伍名称">
-					</div>
-				</div>
-				<div class="form-group row align-items-center">
-					<label for="leader" class="col-sm-2 col-form-label label-center label-large">队长</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="teamLeader" placeholder="队长名">
-					</div>
-				</div>
-				<div class="form-group row align-items-center">
-					<div class="offset-sm-2 col-sm-10">
-						<input type="submit" class="btn btn-dark" id="submit" value="Submit" disabled>
-					</div>
-				</div>
-			</form>
-
-			<!---添加队伍-->
-			<h3 class="mt-4"><a href="#" >Registered Teams</a></h3>
-
-			<form id="addForm">
-				<ul class="list-group" id="items"></ul>
-			</form>
-		</div>
-	</body>
-
-</html> 
+</html>

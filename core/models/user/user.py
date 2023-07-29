@@ -8,4 +8,4 @@ class OrdinaryUser(models.Model):
     avatar = models.ImageField(upload_to='user_avatar/', blank=True, null=True)
 
     class Meta:
-        verbose_name_plural = "OrdinaryUser"
+        verbose_name_plural = "ordinaryuser"

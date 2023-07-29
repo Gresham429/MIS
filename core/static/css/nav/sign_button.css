@@ -10,24 +10,41 @@
     transition: 0.3s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: center; /* Center content horizontally */
+    flex-direction: column;
+    /* 设置垂直排列 */
+
+    align-items: center;
 }
 
 /* 将样式应用于 side-panel 内的链接（<a>标签） */
 .side-panel a {
     margin-top: 10px;
-    width: 90px;
+    width: 80px;
     height: 33px;
-    display: inline-block;
+    display: flex;
+    /* 使用 Flex 布局 */
+    align-items: center;
+    /* 垂直居中 */
+    justify-content: center;
+    /* 水平居中 */
     text-decoration: none;
-    color: #fff;
-    border-radius: 5px; /* 添加圆角边框 */
+    color: #060606;
+    font-size: 14px;
+    border-radius: 5px;
+    /* 添加圆角边框 */
 }
 
 
 /* 展示栏目 */
 .show {
     width: 300px;
+}
+
+/* 将 <hr> 标签样式调整为水平分割实线 */
+.divider {
+    border: none; /* 取消默认的边框样式 */
+    border-top: 1px solid black; /* 添加顶部边框，设置实线，并指定颜色 */
+    width: 100%; /* 让水平分割线充满整个容器宽度 */
 }
 
 /* 头像容器样式 */

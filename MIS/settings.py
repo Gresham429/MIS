@@ -85,26 +85,28 @@ WSGI_APPLICATION = "MIS.wsgi.application"
 #     }
 # }
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'OPTIONS': {
-#            'read_default_file': os.path.join(BASE_DIR, 'my.cnf'), 
-#        }
-#    }
-#}
-
-
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "mis",
-        "USER": "postgres",
-        "PASSWORD": "1543732388@Cxj",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mis_api_db',
+        'USER': 'mis_api_user',
+        'PASSWORD': 'chq691338',
+        'HOST': '120.26.140.131', # 一般是localhost，也可以是数据库服务器的IP地址
+        'PORT': '3306', # 默认是3306
     }
 }
+
+
+#DATABASES = {
+#    "default": {
+#        "ENGINE": "django.db.backends.postgresql",
+#        "NAME": "mis",
+#        "USER": "postgres",
+#        "PASSWORD": "1543732388@Cxj",
+#        "HOST": "127.0.0.1",
+#        "PORT": "5432",
+#    }
+#}
 
 
 # Password validation

@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from core.forms import OrdinaryUserCreationForm
 from core.models.user.user import OrdinaryUser
 
+import json
+
 
 #登录
 def sign_in(request):
@@ -19,14 +21,19 @@ def sign_in(request):
             # 通过反向查询获取关联的OrdinaryUser实例
             ordinary_user = OrdinaryUser.objects.filter(user=user).first()
 
-            # 获取用户头像
-            if ordinary_user is None:
+            if ordinary_user.avatar is None:
                 avatar_url = None
             else:
-                avatar_url = ordinary_user.avatar.url if ordinary_user.avatar else None
+                avatar_url = ordinary_user.avatar.url
 
             #创建请求的会话数据并且重定向到主页
-            request.session['avatar_url'] = avatar_url
+            # 将 OrdinaryUser 对象以json序列化字典形式保存到会话中
+            request.session['ordinary_user'] = json.dumps({
+                'username': ordinary_user.user.username,
+                'email': ordinary_user.user.email,
+                'birthday': ordinary_user.birthday,
+                'avatar_url': avatar_url,
+            })
             return redirect('homepage_index')
     else:
         return render(request, "nav/signin.html")
@@ -53,13 +60,20 @@ def sign_up(request):
             # 通过反向查询获取关联的OrdinaryUser实例
             ordinary_user = OrdinaryUser.objects.filter(user=user).first()
 
-            #获取用户头像
-            avatar_url = ordinary_user.avatar.url if user.ordinaryuser.avatar else None
+            if ordinary_user.avatar is None:
+                avatar_url = None
+            else:
+                avatar_url = ordinary_user.avatar.url
 
             #创建请求的会话数据并且重定向到主页
-            request.session['avatar_url'] = avatar_url
+            # 将 OrdinaryUser 对象以json序列化字典形式保存到会话中
+            request.session['ordinary_user'] = json.dumps({
+                'username': ordinary_user.user.username,
+                'email': ordinary_user.user.email,
+                'birthday': ordinary_user.birthday,
+                'avatar_url': avatar_url,
+            })
             return redirect('homepage_index')
-
     else:
         registered_form = OrdinaryUserCreationForm()
     

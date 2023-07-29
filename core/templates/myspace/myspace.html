@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Profile</title>
+    <style>
+        .edit-icon {
+            font-size: 12px;
+            cursor: pointer;
+            color: blue;
+            margin-left: 5px;
+        }
+    </style>
+
+    <!-- Add Font Awesome (https://fontawesome.com/) to use the pencil icon -->
+    <script src="https://kit.fontawesome.com/38f65d67a3.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1>Welcome to your profile, <span id="username"></span>!</h1>
+    <p>生日: <span id="birthday"></span> <i class="fas fa-pencil-alt edit-icon" data-field="birthday"></i></p>
+    <p id="birthday-error" style="color: red; display: none;">生日日期格式错误，请使用YYYY-MM-DD格式。</p>
+    <p>电子邮箱: <span id="email"></span> <i class="fas fa-pencil-alt edit-icon" data-field="email"></i>
+    </p>
+    <!-- 其他个人中心内容 -->
+
+    <script>
+        //向后端请求更改数据库信息
+        function updateUserInfo(field) {
+            const value = document.getElementById(field).value;
+            const formData = new FormData();
+            formData.append(field, value)
+
+            // Validate birthday date format using regex
+            if (field === 'birthday' && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+                // Show error message and return without sending the request
+                document.getElementById('birthday-error').style.display = 'block';
+                return;
+            }
+
+            // Clear error message if valid format
+            document.getElementById('birthday-error').style.display = 'none';
+
+            fetch('/api/update_user_info/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}', // Add CSRF token header
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Update the displayed data with the data returned from the backend
+                    document.getElementById('email').textContent = data.email;
+                    document.getElementById('birthday').textContent = data.birthday;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Function to toggle editing mode
+        function toggleEdit(field) {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'text');
+            input.setAttribute('id', field);
+            input.setAttribute('value', document.getElementById(field).textContent);
+            document.getElementById(field).replaceWith(input);
+
+            // Add placeholder for birthday input
+            if (field === 'birthday') {
+                input.setAttribute('placeholder', '年-月-日');
+            }
+
+            // Add event listener to input element to save changes when focus is lost
+            input.addEventListener('blur', function () {
+                updateUserInfo(field);
+            });
+        }
+
+        // Add event listeners to edit icons
+        const editIcons = document.querySelectorAll('.edit-icon');
+        editIcons.forEach(icon => {
+            icon.addEventListener('click', function (event) {
+                const field = this.dataset.field;
+                toggleEdit(field);
+            });
+        });
+
+        // AJAX request to get user info from backend
+        function getUserInfo() {
+            fetch('/api/get_user_info/')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('username').textContent = data.username;
+                    document.getElementById('email').textContent = data.email;
+                    document.getElementById('birthday').textContent = data.birthday;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Get user info when the page loads
+        getUserInfo();
+    </script>
+</body>
+
+</html>
