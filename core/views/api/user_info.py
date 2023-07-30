@@ -46,6 +46,7 @@ def update_user_info(request):
         data = {
             'email': user.email,
             'birthday': ordinary_user.birthday,
+            'signature': ordinary_user.signature,
         }
 
         return JsonResponse(data)

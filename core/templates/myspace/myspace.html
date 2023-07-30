@@ -7,19 +7,43 @@
     <!-- 加载静态文件 -->
     {% load static %}
 
+    <!-- 加载Bootstrap样式 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <link rel="stylesheet" href="{% static 'css/myspace/myspace.css' %}">
+
     <!-- Add Font Awesome (https://fontawesome.com/) to use the pencil icon -->
     <script src="https://kit.fontawesome.com/38f65d67a3.js" crossorigin="anonymous"></script>
-</head>
-
 <body>
-    <h1>Welcome to your profile, <span id="username"></span>!</h1>
-    <img id="avatar" class="avatar-img" src="" alt="Avatar">
-    <p>生日: <span id="birthday"></span> <i class="fas fa-pencil-alt edit-icon" data-field="birthday"></i></p>
-    <p id="birthday-error" style="color: red; display: none;">生日日期格式错误，请使用YYYY-MM-DD格式。</p>
-    <p>电子邮箱: <span id="email"></span> <i class="fas fa-pencil-alt edit-icon" data-field="email"></i></p>
-    <p>个性签名：<span id="signature"></span><i class="fas fa-pencil-alt edit-icon" data-field="signature"></i></p>
-    <!-- 其他个人中心内容 -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-3">
+                <img id="avatar" class="avatar-img mx-auto d-block mb-3" src="" alt="Avatar">
+                <h1 class="text-center" id="username"></h1>
+                <p class="text-center">个性签名：<span id="signature"></span> <i class="fas fa-pencil-alt edit-icon" data-field="signature"></i></p>
+            </div>
+            <div class="col-md-9">
+                <h2>个人信息</h2>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>生日：</strong><span id="birthday"></span> <i class="fas fa-pencil-alt edit-icon" data-field="birthday"></i></p>
+                        <p id="birthday-error" style="color: red; display: none;">生日日期格式错误，请使用YYYY-MM-DD格式。</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>电子邮箱：</strong><span id="email"></span> <i class="fas fa-pencil-alt edit-icon" data-field="email"></i></p>
+                    </div>
+                </div>
+
+                <!-- ---------------------------美化用户的个人主页！！------------------------ -->
+
+                <!-- 添加返回首页的链接 -->
+                <div class="text-center mt-4">
+                    <a href="{% url 'homepage_index' %}" class="btn btn-secondary">返回首页</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         //向后端请求更改数据库信息
@@ -50,6 +74,7 @@
                     // Update the displayed data with the data returned from the backend
                     document.getElementById('email').textContent = data.email;
                     document.getElementById('birthday').textContent = data.birthday;
+                    document.getElementById('signature').textContent = data.signature;
                 })
                 .catch(error => console.error('Error:', error));
         }
@@ -95,7 +120,7 @@
                     document.getElementById('username').textContent = data.username;
                     document.getElementById('email').textContent = data.email;
                     document.getElementById('birthday').textContent = data.birthday;
-                    document.getElementById('signature').textContent = data.sigantrue;
+                    document.getElementById('signature').textContent = data.signature;
 
                     // Update the avatar image src attribute
                     const avatarImg = document.getElementById('avatar');
@@ -107,6 +132,13 @@
         // Get user info when the page loads
         getUserInfo();
     </script>
+
+    <!-- 加载Bootstrap的JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
 </body>
 
 </html>
