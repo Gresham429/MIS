@@ -8,6 +8,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
     background-color: rgb(33,37,41);
     padding: 0;
     margin: 0;
+    height: 125px;
     display: flex;
     justify-content: space-between; /* 将导航栏的内容分散对齐，按钮在右侧 */
     align-items: center; /* 内部元素在交叉轴上居中对齐 */
@@ -18,7 +19,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
     margin: 0;
     padding: 0;
     width: 100%; /* 设置宽度为100% */
-    height: 80px; /* 设置高度为50像素 */
+    height: 80px;
     display: flex;
     flex-direction: row; /* 从左往右排布 */
 }
@@ -33,7 +34,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 .navbar a {
     color: white;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: larger;
+    font-size: 30px;
     font-weight: bold;
     font-style: italic;
     transition: 0.2s; /* 添加平滑过渡效果 */
@@ -74,21 +75,5 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 }
 
 #registerButton:hover {
-    transform: scale(1.2); /* 鼠标悬浮时按钮放大1.2倍 */
-}
-
-#signOutButton {
-    width: 60px; /* 设置按钮宽度 */
-    height: 30px; /* 设置按钮高度 */
-    margin-right: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s; /* 添加平滑过渡效果 */
-    border-radius: 15px; /* 设置按钮四角圆滑 */
-}
-
-#signOutButton:hover {
     transform: scale(1.2); /* 鼠标悬浮时按钮放大1.2倍 */
 }

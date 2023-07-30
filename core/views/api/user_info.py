@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from core.models.user.user import OrdinaryUser
+from core.models.user.models import OrdinaryUser
 
 
 @login_required(login_url='sign_in')

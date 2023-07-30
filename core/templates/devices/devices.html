@@ -1,16 +1,83 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>设备</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备</title>
+    <!-- 加载Bootstrap样式 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
 
-    <body>
-        {% include '../nav/navbar.html' %}
+<body>
+    {% include '../nav/navbar.html' %}
 
-        <h1>这里是设备</h1>
-    </body>
+    <div class="container mt-5">
+        <h2>设备信息</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>物资类别</th>
+                    <th>物资名称</th>
+                    <th>型号</th>
+                    <th>数量</th>
+                </tr>
+            </thead>
+            <tbody id="devices-list">
+                <!-- 设备信息会动态添加到这里 -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // 弹窗处理函数
+        function openPopup(device_name) {
+            // 使用 jQuery 发送 AJAX 请求获取设备详细信息
+            $.ajax({
+                url: '/api/get_device_detail/' + device_name + '/',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // 构建弹窗内容
+                    var popupContent = data.popupContent;
+
+                    // 使用 Bootstrap 的 modal 创建弹窗
+                    $('#myModal .modal-body').html(popupContent); // 设置弹窗内容
+                    $('#myModal').modal('show'); // 显示弹窗
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        // 使用 jQuery 发送 AJAX 请求获取设备信息
+        $.ajax({
+            url: '/api/get_devices_list/',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                // 获取到设备信息列表后，动态生成表格内容
+                var devicesList = data;
+                var tableBody = $('#devices-list');
+                for (var i = 0; i < devicesList.length; i++) {
+                    var device = devicesList[i];
+                    var row = '<tr>' +
+                        '<td>' + device.category + '</td>' +
+                        '<td>' + device.name + '</td>' +
+                        '<td>' + device.model + '</td>' +
+                        '<td>' + device.total_quantity + '</td>' +
+                        '<td><button type="button" class="btn btn-primary" onclick="openPopup(' + device.name + ')">查看详情</button></td>' +
+                        '</tr>';
+                    tableBody.append(row);
+                }
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
 
 </html>

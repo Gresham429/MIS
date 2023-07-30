@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from core.forms import OrdinaryUserCreationForm
-from core.models.user.user import OrdinaryUser
+from core.forms.user_forms import OrdinaryUserCreationForm
+from core.models.user.models import OrdinaryUser
 
 import json
 
@@ -21,13 +21,17 @@ def sign_in(request):
             # 通过反向查询获取关联的OrdinaryUser实例
             ordinary_user = OrdinaryUser.objects.filter(user=user).first()
 
-            if ordinary_user.avatar is None:
-                avatar_url = None
-            else:
+            # 检查头像文件是否存在
+            if ordinary_user.avatar and ordinary_user.avatar.file:
                 avatar_url = ordinary_user.avatar.url
+            else:
+                avatar_url = None
 
-            # 将 'date' 对象转换为字符串
-            birthday_str = ordinary_user.birthday.strftime('%Y-%m-%d')
+            # 检查生日是否存在并转换为str
+            if ordinary_user.birthday:
+                birthday_str = ordinary_user.birthday.strftime('%Y-%m-%d')
+            else:
+                birthday_str = "未设置生日"  # 或者设置一个默认值)
 
             #创建请求的会话数据并且重定向到主页
             # 将 OrdinaryUser 对象以json序列化字典形式保存到会话中
@@ -63,13 +67,17 @@ def sign_up(request):
             # 通过反向查询获取关联的OrdinaryUser实例
             ordinary_user = OrdinaryUser.objects.filter(user=user).first()
 
-            if ordinary_user.avatar is None:
-                avatar_url = None
-            else:
+            # 检查头像文件是否存在
+            if ordinary_user.avatar and ordinary_user.avatar.file:
                 avatar_url = ordinary_user.avatar.url
+            else:
+                avatar_url = None
 
-            # 将 'date' 对象转换为字符串
-            birthday_str = ordinary_user.birthday.strftime('%Y-%m-%d')
+            # 检查生日是否存在并转换为str
+            if ordinary_user.birthday:
+                birthday_str = ordinary_user.birthday.strftime('%Y-%m-%d')
+            else:
+                birthday_str = "未设置生日"  # 或者设置一个默认值)
 
             #创建请求的会话数据并且重定向到主页
             # 将 OrdinaryUser 对象以json序列化字典形式保存到会话中
