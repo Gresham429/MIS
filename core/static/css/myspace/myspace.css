@@ -1,0 +1,14 @@
+.edit-icon {
+    font-size: 12px;
+    cursor: pointer;
+    color: blue;
+    margin-left: 5px;
+}
+
+.avatar-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #e0e0e0;
+}

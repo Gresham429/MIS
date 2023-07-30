@@ -26,12 +26,15 @@ def sign_in(request):
             else:
                 avatar_url = ordinary_user.avatar.url
 
+            # 将 'date' 对象转换为字符串
+            birthday_str = ordinary_user.birthday.strftime('%Y-%m-%d')
+
             #创建请求的会话数据并且重定向到主页
             # 将 OrdinaryUser 对象以json序列化字典形式保存到会话中
             request.session['ordinary_user'] = json.dumps({
                 'username': ordinary_user.user.username,
                 'email': ordinary_user.user.email,
-                'birthday': ordinary_user.birthday,
+                'birthday': birthday_str,
                 'avatar_url': avatar_url,
             })
             return redirect('homepage_index')
@@ -65,12 +68,15 @@ def sign_up(request):
             else:
                 avatar_url = ordinary_user.avatar.url
 
+            # 将 'date' 对象转换为字符串
+            birthday_str = ordinary_user.birthday.strftime('%Y-%m-%d')
+
             #创建请求的会话数据并且重定向到主页
             # 将 OrdinaryUser 对象以json序列化字典形式保存到会话中
             request.session['ordinary_user'] = json.dumps({
                 'username': ordinary_user.user.username,
                 'email': ordinary_user.user.email,
-                'birthday': ordinary_user.birthday,
+                'birthday': birthday_str,
                 'avatar_url': avatar_url,
             })
             return redirect('homepage_index')

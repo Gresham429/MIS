@@ -8,11 +8,15 @@ from core.models.user.user import OrdinaryUser
 def get_user_info(request):
     user = request.user
     ordinary_user = OrdinaryUser.objects.filter(user=user).first()
+
     data = {
         'username': ordinary_user.user.username,
+        'avatar_url': ordinary_user.avatar.url,
         'email': ordinary_user.user.email,
         'birthday': ordinary_user.birthday,
+        'signature': ordinary_user.signature,
     }
+
     return JsonResponse(data)
 
 @login_required(login_url='sign_in')
@@ -24,6 +28,7 @@ def update_user_info(request):
         # 获取POST请求中的数据
         email = request.POST.get('email')
         birthday = request.POST.get('birthday')
+        signature = request.POST.get('signature')
 
         # 更新用户信息
         if email:
@@ -31,6 +36,8 @@ def update_user_info(request):
             ordinary_user.user.email = email
         if birthday:
             ordinary_user.birthday = birthday
+        if signature:
+            ordinary_user.signature = signature
 
         user.save()
         ordinary_user.save()

@@ -3,25 +3,22 @@
 
 <head>
     <title>User Profile</title>
-    <style>
-        .edit-icon {
-            font-size: 12px;
-            cursor: pointer;
-            color: blue;
-            margin-left: 5px;
-        }
-    </style>
 
+    <!-- 加载静态文件 -->
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/myspace/myspace.css' %}">
     <!-- Add Font Awesome (https://fontawesome.com/) to use the pencil icon -->
     <script src="https://kit.fontawesome.com/38f65d67a3.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <h1>Welcome to your profile, <span id="username"></span>!</h1>
+    <img id="avatar" class="avatar-img" src="" alt="Avatar">
     <p>生日: <span id="birthday"></span> <i class="fas fa-pencil-alt edit-icon" data-field="birthday"></i></p>
     <p id="birthday-error" style="color: red; display: none;">生日日期格式错误，请使用YYYY-MM-DD格式。</p>
-    <p>电子邮箱: <span id="email"></span> <i class="fas fa-pencil-alt edit-icon" data-field="email"></i>
-    </p>
+    <p>电子邮箱: <span id="email"></span> <i class="fas fa-pencil-alt edit-icon" data-field="email"></i></p>
+    <p>个性签名：<span id="signature"></span><i class="fas fa-pencil-alt edit-icon" data-field="signature"></i></p>
     <!-- 其他个人中心内容 -->
 
     <script>
@@ -70,6 +67,11 @@
                 input.setAttribute('placeholder', '年-月-日');
             }
 
+            // Add placeholder for birthday input
+            if (field === 'signature') {
+                input.setAttribute('placeholder', '不超过200字');
+            }
+
             // Add event listener to input element to save changes when focus is lost
             input.addEventListener('blur', function () {
                 updateUserInfo(field);
@@ -93,6 +95,11 @@
                     document.getElementById('username').textContent = data.username;
                     document.getElementById('email').textContent = data.email;
                     document.getElementById('birthday').textContent = data.birthday;
+                    document.getElementById('signature').textContent = data.sigantrue;
+
+                    // Update the avatar image src attribute
+                    const avatarImg = document.getElementById('avatar');
+                    avatarImg.src = data.avatar_url;
                 })
                 .catch(error => console.error('Error:', error));
         }
