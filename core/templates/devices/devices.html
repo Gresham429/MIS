@@ -7,17 +7,34 @@
     <title>设备</title>
     <!-- 加载Bootstrap样式 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- 引入 Bootstrap 的 JavaScript 文件 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
 <body>
     {% include '../nav/navbar.html' %}
 
+    <!-- 添加排序方式的下拉选择框和搜索框 -->
     <div class="container mt-5">
         <h2>设备信息</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="sort-select">选择排序方式：</label>
+                <select id="sort-select" class="form-control" onchange="sortDevices()">
+                    <option value="name">按名称排序</option>
+                    <option value="total_quantity">按数量排序</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="search-input">搜索设备：</label>
+                <input type="text" id="search-input" class="form-control" oninput="searchDevices()"
+                    placeholder="请输入设备名称或型号">
+            </div>
+        </div>
         <table class="table">
             <thead>
                 <tr>
-                    <th>物资类别</th>
                     <th>物资名称</th>
                     <th>型号</th>
                     <th>数量</th>
@@ -29,13 +46,31 @@
         </table>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- modal元素 -->
+    <div class="modal" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">设备详细信息</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 这里显示设备详细信息 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         // 弹窗处理函数
-        function openPopup(device_name) {
+        function openPopup(device_name, device_model) {
             // 使用 jQuery 发送 AJAX 请求获取设备详细信息
             $.ajax({
-                url: '/api/get_device_detail/' + device_name + '/',
+                url: '/api/get_device_detail/' + device_name + '/' + device_model + '/',
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
@@ -52,31 +87,89 @@
             });
         }
 
+        // 生成设备信息表格
+        function generateTable(devicesList) {
+            var tableBody = $('#devices-list');
+            tableBody.empty(); // 清空原有表格内容
+            for (var i = 0; i < devicesList.length; i++) {
+                var device = devicesList[i];
+                var row = '<tr>' +
+                    '<td>' + device.name + '</td>' +
+                    '<td>' + device.model + '</td>' +
+                    '<td>' + device.total_quantity + '</td>' +
+                    '<td><button type="button" class="btn btn-primary" onclick=\'openPopup("' + encodeURIComponent(device.name) + '", "' + encodeURIComponent(device.model) + '")\'>查看详情</button></td>' +
+                    '</tr>';
+                tableBody.append(row);
+            }
+        }
+
         // 使用 jQuery 发送 AJAX 请求获取设备信息
         $.ajax({
             url: '/api/get_devices_list/',
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                // 获取到设备信息列表后，动态生成表格内容
-                var devicesList = data;
-                var tableBody = $('#devices-list');
-                for (var i = 0; i < devicesList.length; i++) {
-                    var device = devicesList[i];
-                    var row = '<tr>' +
-                        '<td>' + device.category + '</td>' +
-                        '<td>' + device.name + '</td>' +
-                        '<td>' + device.model + '</td>' +
-                        '<td>' + device.total_quantity + '</td>' +
-                        '<td><button type="button" class="btn btn-primary" onclick="openPopup(' + device.name + ')">查看详情</button></td>' +
-                        '</tr>';
-                    tableBody.append(row);
-                }
+                // 获取到设备信息列表后,动态生成表格内容,初始时默认按名称排序
+                var devicesList = data.sort(function (a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+                generateTable(devicesList);
             },
             error: function (error) {
                 console.error('Error:', error);
             }
         });
+
+        // 排序设备信息并重新生成表格内容
+        function sortDevices() {
+            var sortKey = $('#sort-select').val();
+            $.ajax({
+                url: '/api/get_devices_list/',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var devicesList = data.sort(function (a, b) {
+                        if (sortKey === 'name') {
+                            return a.name.localeCompare(b.name);
+                        }
+                        else if (sortKey === 'total_quantity') {
+                            return a.total_quantity - b.total_quantity;
+                        }
+                    });
+
+                    generateTable(devicesList);
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        // 搜索设备信息并重新生成表格内容
+        function searchDevices() {
+            var keyword = $('#search-input').val().toLowerCase();
+            if (keyword.trim() === '') {
+                // 关键字为空，不执行搜索，恢复显示全部设备列表
+                sortDevices(); // 恢复排序并重新生成表格
+                return;
+            }
+            $.ajax({
+                url: '/api/get_devices_list/',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var filteredList = data.filter(function (device) {
+                        // 判断设备名称或型号是否包含关键字
+                        return device.name && device.name.toLowerCase().includes(keyword) ||
+                            device.model && device.model.toLowerCase().includes(keyword);
+                    });
+                    generateTable(filteredList); // 生成设备信息表格
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
     </script>
 </body>
 
