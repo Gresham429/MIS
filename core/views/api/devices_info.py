@@ -27,8 +27,6 @@ def get_devices_info(request, device_name, device_model):
         device_name = unquote(device_name)
         device_model = unquote(device_model)
 
-        print(device_model)
-        print(device_model)
 
         # 查询设备名称为device_name、设备型号为device_model的所有数据
         devices = Devices.objects.filter(name=device_name, model=device_model)
