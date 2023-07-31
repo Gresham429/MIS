@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from core.models.user.models import OrdinaryUser
 from core.models.devices.models import Devices
 
+
 # Register your models here.
 
 class OrdinaryUserInline(admin.TabularInline):
