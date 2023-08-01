@@ -17,7 +17,7 @@ def get_user_info(request):
 
     data = {
         'username': ordinary_user.user.username,
-        'avatar_url': ordinary_user.avatar.url,
+        'avatar_url': avatar_url,
         'email': ordinary_user.user.email,
         'birthday': ordinary_user.birthday,
         'signature': ordinary_user.signature,
