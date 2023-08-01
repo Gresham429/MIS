@@ -26,12 +26,17 @@ SECRET_KEY = "django-insecure-2+y8zy++3$89dhk2pf2sglb!n)^wis=gi&7*bl(7^=bmtpy72=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["116.62.7.191"]
+ALLOWED_HOSTS = [
+    "116.62.7.191",
+    "127.0.0.1",
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
+    "channels",
     "core.apps.CoreConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -40,9 +45,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-
     'myapp_hzx',
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -72,7 +82,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "MIS.wsgi.application"
+# WSGI_APPLICATION = "MIS.wsgi.application"
+
+ASGI_APPLICATION = "MIS.asgi.application"
 
 
 # Database

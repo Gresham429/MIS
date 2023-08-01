@@ -9,6 +9,12 @@ def get_user_info(request):
     user = request.user
     ordinary_user = OrdinaryUser.objects.filter(user=user).first()
 
+    # 检查头像文件是否存在
+    if ordinary_user.avatar and ordinary_user.avatar.file:
+        avatar_url = ordinary_user.avatar.url
+    else:
+        avatar_url = None
+
     data = {
         'username': ordinary_user.user.username,
         'avatar_url': ordinary_user.avatar.url,

@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 from core.models.user.models import OrdinaryUser
 from core.models.devices.models import Devices
+from core.models.chat_field.models import Message
 
 
 # Register your models here.
@@ -18,3 +19,4 @@ class UserAdmin(BaseUserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Devices)
+admin.site.register(Message)

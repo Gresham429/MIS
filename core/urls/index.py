@@ -10,5 +10,6 @@ urlpatterns = [
     path("teams/", include("core.urls.teams.index")),
     path("devices/", include("core.urls.devices.index")),
     path("myspace/", include("core.urls.myspace.index")),
+    path("chat_field/", include("core.urls.chat_field.index")),
     path("api/", include("core.urls.api.index"))
 ]

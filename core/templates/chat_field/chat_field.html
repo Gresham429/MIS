@@ -1,0 +1,45 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Chat</title>
+</head>
+<body>
+    <h1>Simple Chat</h1>
+    <div id="chat-box">
+        <!-- 消息显示区域 -->
+    </div>
+    <input type="text" id="message-input" placeholder="输入消息">
+    <button onclick="sendMessage()">发送</button>
+
+    <script>
+        // 设置全局变量current_user
+        var current_user = "{{ current_user }}";
+
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/chat/');
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            appendMessage(data.sender, data.content);
+        };
+
+        function appendMessage(sender, content) {
+            const chatBox = document.getElementById('chat-box');
+            const messageDiv = document.createElement('div');
+            messageDiv.innerHTML = `<strong>${sender}:</strong> ${content}`;
+            chatBox.appendChild(messageDiv);
+        }
+
+        function sendMessage() {
+            const sender = current_user;  // 当前用户
+            const content = document.getElementById('message-input').value;
+            document.getElementById('message-input').value = '';
+
+            // 发送消息到WebSocket服务器
+            socket.send(JSON.stringify({
+                'sender': sender,
+                'content': content,
+            }));
+        }
+    </script>
+</body>
