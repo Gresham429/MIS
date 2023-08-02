@@ -13,7 +13,7 @@
 </head>
 
 <body>
-  <nav style="margin-right: 40px;">
+  <nav class="nav_right">
     <!-- 如果用户已登录 -->
     {% if user.is_authenticated %}
 
@@ -30,9 +30,10 @@
 
     <!-- 用户右侧栏目 -->
     <div class="side-panel" id="sidePanel">
-      <a href="{% url 'user_profile' username=username %}">个人中心</a>
-      <hr class="divider">
-      <a href="{% url 'sign_out' %}">
+      <a href="{% url 'user_profile' username=username %}" class="username">个人中心</a>
+      <!--分割线-->
+      <div class="divider"></div>
+      <a href="{% url 'sign_out' %}" class="sign_out">
         <button id="signOutButton">登出</button>
       </a>
     </div>
@@ -41,27 +42,52 @@
     {% else %}
 
     <!-- 登录按钮 -->
-    <a href="{% url 'sign_in' %}">
+    <a href="{% url 'sign_in' %}" class="loginButton_a">
       <button id="loginButton">登录</button>
     </a>
 
     <!-- 注册按钮 -->
-    <a href="{% url 'sign_up' %}">
+    <a href="{% url 'sign_up' %}" class="registerButton_a">
       <button id="registerButton">注册</button>
     </a>
 
     {% endif %}
   </nav>
 
+   <!-- 透明的覆盖canvas -->
+  <canvas id="overlayCanvas"></canvas>
+
+
   <!-- JavaScript控制右侧栏目 -->
   <script>
+    // 获取右侧栏目元素
+    const sidePanel = document.getElementById("sidePanel");
+    const img = document.querySelector(".avatar-container");
+    // 获取覆盖canvas元素
+    const overlayCanvas = document.getElementById("overlayCanvas");
+    const ctx = overlayCanvas.getContext("2d");
+
     // 点击头像时显示右侧栏目
     function toggleSidePanel() {
-      // 获取右侧栏目元素
-      var sidePanel = document.getElementById("sidePanel");
       // 显示右侧栏目
+      sidePanel.classList.remove("hide")
       sidePanel.classList.toggle("show");
+      overlayCanvas.style.display = sidePanel.classList.contains("show") ? "block" : "none";
     }
+
+    // 监听点击事件，如果点击在除右侧栏以外的地方，隐藏右侧栏
+    document.addEventListener('click', function(event) {
+      if (!sidePanel.contains(event.target) && !img.contains(event.target)) {
+        sidePanel.classList.remove("show");
+        sidePanel.classList.toggle("hide");
+        overlayCanvas.style.display = "none";
+      }
+    });
+    // 绘制透明canvas
+    overlayCanvas.width = window.innerWidth;
+    overlayCanvas.height = window.innerHeight;
+    ctx.fillStyle = "rgba(33, 43, 54, 0.2)"; // 使用透明白色作为背景颜色
+    ctx.fillRect(0, 0, overlayCanvas.width, overlayCanvas.height);
   </script>
 </body>
 

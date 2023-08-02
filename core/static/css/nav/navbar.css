@@ -4,6 +4,13 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
     padding: 0;
 }  
 
+.nav_right {
+    position: relative;
+    width: 10%;
+    margin-right: 4%;
+}
+
+
 .navbar {
     background-color: rgb(33,37,41);
     padding: 0;
@@ -16,7 +23,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 
 .navbar ul {
     list-style-type: none;
-    margin: 0;
+    margin-left: 15px;
     padding: 0;
     width: 100%; /* 设置宽度为100% */
     height: 80px;
@@ -25,8 +32,8 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 }
 
 .navbar li {
-    padding: 0;
-    margin: 15px; /*设置每个li的间距*/
+    justify-content: space-between;
+    margin: 10px; /*设置每个li的间距*/
     display: flex; /* 使用 Flex 布局 */
     align-items: center; /* 垂直居中 */
 }
@@ -42,20 +49,36 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 }
 
 .navbar a:hover {
-    background-color: #555;
-    transform: scale(1.2); /* 鼠标悬停时文字放大 */
+    background-color: rgb(33, 37, 41);
+    transform: scale(1.2); /*鼠标悬停文字放大*/
+}
+
+.loginButton_a {
+    margin-top: 7%;
+    margin-right: 6%;
+   
+}
+
+.registerButton_a {
+    margin-top: 7%;
+    margin-right: 2%;
 }
 
 #loginButton {
-    width: 60px; /* 设置按钮宽度 */
-    height: 30px; /* 设置按钮高度 */
-    margin-right: 10px;
+    width: 60px; 
+    height: 30px;
+    margin-bottom: 8%;
+    margin-right: 4%;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
     transition: 0.2s; /* 添加平滑过渡效果 */
     border-radius: 15px; /* 设置按钮四角圆滑 */
+    /* 使用 transform 属性来等比例扩大盒子 */
+    transform: scale(1.2);
+    /* 设置变换的原点，这里设置为左上角 */
+    transform-origin: 0 0;
 }
 
 #loginButton:hover {
@@ -65,13 +88,17 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 #registerButton {
     width: 60px; /* 设置按钮宽度 */
     height: 30px; /* 设置按钮高度 */
-    margin-right: 10px;
+    margin-bottom: 8%;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
     transition: 0.2s; /* 添加平滑过渡效果 */
     border-radius: 15px; /* 设置按钮四角圆滑 */
+    /* 使用 transform 属性来等比例扩大盒子 */
+    transform: scale(1.2);
+    /* 设置变换的原点，这里设置为左上角 */
+    transform-origin: 0 0;
 }
 
 #registerButton:hover {

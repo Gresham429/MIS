@@ -1,4 +1,6 @@
 import json
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 from channels.generic.websocket import AsyncWebsocketConsumer
 from core.models.chat_field.models import Message
 from asgiref.sync import sync_to_async
@@ -8,6 +10,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # 加入聊天组
         await self.channel_layer.group_add('chat_group', self.channel_name)
         await self.accept()
+
+        history_messages = await self.get_history_messages(limit=20)
+
+        for message in history_messages:
+            await self.send(text_data=json.dumps({
+            'sender': message.sender,
+            'content': message.content,
+        }))
 
     async def disconnect(self, close_code):
         # 离开聊天组
@@ -41,3 +51,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'sender': sender,
             'content': content,
         }))
+
+    async def get_history_messages(self, limit=20):
+        total_records = await sync_to_async(Message.objects.all().count)()
+
+        if total_records < limit:
+            limit = total_records
+    
+        loop = asyncio.get_event_loop()
+        with ThreadPoolExecutor() as executor:
+            return await loop.run_in_executor(executor, lambda: list(Message.objects.all().iterator())[:limit])
+
+    
+    
