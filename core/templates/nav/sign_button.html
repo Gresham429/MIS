@@ -30,12 +30,33 @@
 
     <!-- 用户右侧栏目 -->
     <div class="side-panel" id="sidePanel">
-      <a href="{% url 'user_profile' username=username %}" class="username">个人中心</a>
+      <a class="username">{{username}}</a>
+
       <!--分割线-->
-      <div class="divider"></div>
-      <a href="{% url 'sign_out' %}" class="sign_out">
-        <button id="signOutButton">登出</button>
-      </a>
+      <ul>
+        <li>
+          <div class="divider"></div>
+          <a href="{% url 'user_profile' username=username %}">个人中心</a>
+        </li>
+        
+        <li>
+          <div class="divider"></div>
+          <a>团队</a>
+        </li>
+  
+        <li>
+          <div class="divider"></div>
+          <a>设置</a>
+        </li>
+  
+        <li>
+          <div class="divider"></div>
+          <a href="{% url 'sign_out' %}" class="sign_out">
+            <button id="signOutButton">登出</button>
+          </a>
+        </li>
+      </ul>
+      
     </div>
 
     <!-- 如果用户未登录 -->

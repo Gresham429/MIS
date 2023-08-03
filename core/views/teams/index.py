@@ -1,10 +1,8 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 
 import json
 
 
-@login_required(login_url='sign_in')
 def teams_index(request):
     # 从会话中获取保存的 OrdinaryUser 数据
     json_data = request.session.get('ordinary_user', None)

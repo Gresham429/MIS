@@ -7,48 +7,65 @@
     height: 100%;
     background-color: rgb(247, 245, 245);
     overflow-x: hidden;
-    transition: 0.4s;
-    
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    /* 设置垂直排列 */
     align-items: center;
     border-top-left-radius: 12px; /* 右上角设为0 */
     border-bottom-left-radius: 12px; /* 右下角设为0 */
 }
 
 .show {
-    width: 19.5%;
-    transition: 0.35s;
+    width: 21%;
+    transition: 0.3s;
 }
 
 .hide {
     width: 0%;
-    transition: 0.35s;
+    transition: 0.2s;
 }
 
-/* 将样式应用于 side-panel 内的链接（<a>标签） */
-.side-panel a {
-    color: rgb(33, 37, 41);
+.side-panel ul {
     display: flex;
-    /* 使用 Flex 布局 */
+    flex-direction: column;
+    margin: 0%;
+    width: 100%;
+    margin-top: 3%;
+    height: 70%;
+}
+
+.side-panel li {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    /* 垂直居中 */
     justify-content: center;
-    /* 水平居中 */
+}
+/* 将样式应用于 li 内的链接（<a>标签） */
+.side-panel li a {
     text-decoration: none;
-    font-size: medium;
-    text-decoration: none;
-    background-color: rgb(247, 245, 245);
+    color: #060606;
 }
 
 /* 水平分割实线 */
 .divider {
-    margin-top: 3%;
     border: 1px solid rgb(224,224,224); /* 添加顶部边框，设置实线，并指定颜色 */
     width: 90%;  /*让水平分割线几乎充满整个容器宽度*/
     border-radius: 15px;
+    margin-bottom: 15%;
 }
+
+.username {
+    color: #060606;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    margin-top: 7%;
+    font-size: 16px;
+}
+
 
 /* 头像容器样式 */
 .avatar-container {
@@ -69,6 +86,11 @@
     border-radius: 50%;
 }
 
+.avatar-img:hover {
+    transform: scale(1.2);
+    transition: 0.2s; /* 添加平滑过渡效果 */
+}
+
 /* 头像占位符样式 */
 .avatar-placeholder {
     width: 50px;
@@ -80,8 +102,8 @@
 /* 登出按钮样式 */
 #signOutButton {
     width: 90px;
-    height: 35px;
-    /* background-color: #008CBA; */
+    height: 33px;
+    background-color: #008CBA;
     color: white;
     border: none;
     text-align: center;
@@ -109,13 +131,3 @@
 
 }
 
-.username {
-    margin-top: 3%;
-    font-size: 16px;
-    box-shadow: none; /* 或者删除这行代码 */
-}
-
-.sign_out {
-    margin-top: 10%;
-
-}

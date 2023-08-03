@@ -12,9 +12,12 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 
 
 .navbar {
+    position: relative;
+    z-index: 100;
     background-color: rgb(33,37,41);
     padding: 0;
     margin: 0;
+    width: 100%;
     height: 125px;
     display: flex;
     justify-content: space-between; /* 将导航栏的内容分散对齐，按钮在右侧 */
@@ -38,8 +41,10 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
     align-items: center; /* 垂直居中 */
 }
 
-.navbar a {
+.nav_left a {
     color: white;
+}
+.navbar a {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 30px;
     font-weight: bold;
@@ -49,7 +54,6 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 }
 
 .navbar a:hover {
-    background-color: rgb(33, 37, 41);
     transform: scale(1.2); /*鼠标悬停文字放大*/
 }
 

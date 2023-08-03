@@ -1,16 +1,108 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>团队</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>团队</title>
+    <!-- 加载静态文件 -->
+    {% load static %}
+    <!-- 引入Bootstrap的CSS文件 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- 引入自定义的CSS文件 -->
+    <link rel="stylesheet" href="{% static 'css/teams/teams.css' %}">
+    <!-- 引入 Bootstrap 和 jquery 的 JavaScript 文件 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- 引入particles.js库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
+</head>
 
-    <body>
-        {% include '../nav/navbar.html' %}
+<body>
+    {% include '../nav/navbar.html' %}
 
-        <h1>这里是团队</h1>
-    </body>
+    <div class="container">
+        <div class="row team-container" id=team-container>
+            <!-- 这里加载团队卡片 -->
+        </div>
+    </div>
+
+    <canvas class="Canvas" id="Canvas"></canvas>
+
+    <script>
+        window.onload = function () {
+            // 初始化 "Particles" 插件
+            var particlesConfig = {
+                selector: "#Canvas", // 你的 canvas 元素的 CSS 选择器
+                maxParticles: 300, // 粒子的最大数量
+                sizeVariations: 3, // 粒子大小的变化量
+                speed: 0.5, // 粒子的移动速度
+                color: [
+                    "#FFD700", // 金色
+                    "#FF8C00", // 橙色
+                    "#7FFF00", // 鹦鹉绿
+                    "#FF00FF", // 紫红色
+                    "#FFFF00", // 黄色
+                    "#00FF00", // 酸橙色
+                    "#FF1493", // 深粉色
+                    "#00BFFF", // 深天蓝
+                    "#FF4500", // 番茄红
+                    "#FFA500", // 橙色
+                    "#00FFFF", // 青色
+                    "#FFC0CB", // 粉红色
+                    "#FFFFE0", // 浅黄色
+                    "#F0E68C", // 卡其色
+                    "#F08080", // 淡珊瑚色
+                ],
+                // 粒子和连接线的颜色，也可以是一个包含多个颜色的数组
+                minDistance: 80, // 连接线的最小距离（像素）
+                connectParticles: true, // 是否绘制连接线，true 表示绘制连接线，false 表示不绘制连接线
+                responsive: [
+                    // 响应式配置，根据不同的屏幕宽度应用不同的配置
+                    {
+                        breakpoint: 768, // 屏幕宽度小于等于 768px 时应用的配置
+                        options: {
+                            maxParticles: 50,
+                            speed: 0.3,
+                        },
+                    },
+                    {
+                        breakpoint: 480, // 屏幕宽度小于等于 480px 时应用的配置
+                        options: {
+                            maxParticles: 30,
+                            speed: 0.2,
+                        },
+                    },
+                ],
+            };
+            Particles.init(particlesConfig);
+        };
+
+        // 使用 jQuery 发送 AJAX 请求获取团队信息
+        $.ajax({
+            url: '/api/get_teams_info/',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var team_list = data;
+                var team_container = $('#team-container');
+
+                for (var i = 0; i < team_list.length; i++) {
+                    var team = team_list[i];
+                    var info = '<div class="col-lg-4 col-md-6">' +
+                        '<div class="team-card">' +
+                        '<h2>' + team.name + '</h2>' +
+                        '</div>' +
+                        '</div>';
+                    team_container.append(info);
+                }
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+
+    </script>
+</body>
 
 </html>

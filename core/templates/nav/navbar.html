@@ -2,26 +2,26 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../../static/css/nav/navbar.css">
-    </head>
-    
-    <body>
-        <div class="navbar">
-            <!-- 导航栏 -->
-            <nav>
-                <ul style="justify-content: flex-start">
-                    <li><a href="{% url 'homepage_index' %}">首页</a></li>
-                    <li><a href="{% url 'teams_index' %}">团队</a></li>
-                    <li><a href="{% url 'devices_index' %}">设备</a></li>
-                    <li><a href="{% url 'chat_field_index' %}">聊天室</a></li>
-                </ul>
-            </nav>
-            <!--引入登录、注册以及登出组件 -->
-            {% include 'nav/sign_button.html' %}
-        </div>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/css/nav/navbar.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <!-- 导航栏 -->
+        <nav class="nav_left">
+            <ul style="justify-content: flex-start">
+                <li><a href="{% url 'homepage_index' %}">首页</a></li>
+                <li><a href="{% url 'teams_index' %}">团队</a></li>
+                <li><a href="{% url 'devices_index' %}">设备</a></li>
+                <!-- <li><a href="{% url 'chat_field_index' %}">聊天室</a></li> -->
+            </ul>
+        </nav>
+        <!--引入登录、注册以及登出组件 -->
+        {% include 'nav/sign_button.html' %}
+    </div>
+</body>
 
 </html>
