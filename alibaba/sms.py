@@ -5,7 +5,7 @@ from aliyunsdkcore.request import CommonRequest
 
 def send_sms_code(mobile, sms_code):
 
-    client = AcsClient('LTAI5tGFGSmhx4jw6Q6GfFGU', 'mp9YOWognarcJaG13WgPtcOADtEf4I', 'cn-hangzhou')
+    client = AcsClient('', '', '')
 
     request = CommonRequest()
     request.set_accept_format('json')
