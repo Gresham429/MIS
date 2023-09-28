@@ -1,6 +1,7 @@
 from django import forms
 from core.models.teams.models import Team, TeamMember
 
+
 def TeamCreationForm():
     class TeamForm(forms.ModelForm):
         # 重写 __init__ 方法，为可以为 null 的字段添加选填标记

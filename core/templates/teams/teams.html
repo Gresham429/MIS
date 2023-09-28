@@ -11,11 +11,26 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- 引入自定义的CSS文件 -->
     <link rel="stylesheet" href="{% static 'css/teams/teams.css' %}">
+    <link rel="stylesheet" href="{% static 'css/teams/modal.css' %}">
     <!-- 引入 Bootstrap 和 jquery 的 JavaScript 文件 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- 引入particles.js库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
+    <script src="{% static 'js/src/background.js' %}"></script>
+    <script src="{% static 'js/src/team.js' %}"></script>
+
+    <style>
+        #deleteConfirmModal {
+            z-index: 1100;
+            /* 设置一个较高的层级值，确保弹窗在上层 */
+        }
+
+        #teamMemberModal {
+            z-index: 1100;
+            /* 设置一个较高的层级值，确保弹窗在上层 */
+        }
+    </style>
 </head>
 
 <body>
@@ -27,79 +42,221 @@
         </div>
     </div>
 
+    <!-- modal元素 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">团队信息</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 这里显示团队详细信息 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 显示成员信息弹窗 -->
+    <div class="modal fade" id="teamMemberModal" tabindex="-1" role="dialog" aria-labelledby="teamMemberModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="teamMemberModalLabel">Team Member Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 显示 Team Member 信息的内容 -->
+                    <div id="teamMemberInfo">
+                        <p><strong>Name:</strong> <span id="memberName"></span></p>
+                        <p><strong>MIB ID:</strong> <span id="memberMIBID"></span></p>
+                        <p><strong>Student ID:</strong> <span id="memberStudentID"></span></p>
+                        <p><strong>Email:</strong> <span id="memberEmail"></span></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- 删除团队的确认弹窗 -->
+    <div class="modal" id="deleteConfirmModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">删除</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>确定要删除吗？</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button id="confirmDeleteBtn" type="button" class="btn btn-danger">确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑团队的弹窗 -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">编辑团队信息</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editTeamForm">
+                        <div class="form-group">
+                            <label for="name">团队名称</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">团队描述</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+
+                        <!-- 显示团队成员列表 -->
+                        <div>
+                            <hr>
+                            <h5>团队成员</h5>
+                            <hr>
+                            <ul id="team-members-list">
+                                <!-- 这里将显示团队成员 -->
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="saveEditBtn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 增加团队的弹窗 -->
+    <div class="modal" id="addTeamModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">新增团队</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 表单-->
+                    <form id="add-team-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="team-name">团队名称:</label>
+                            <input type="text" class="form-control" id="team-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="team-description">团队描述:</label>
+                            <input type="text" class="form-control" id="team-description">
+                        </div>
+                        <div class="form-group">
+                            <label for="team-logo">团队 Logo:</label>
+                            <input type="file" class="form-control-file" id="team-logo">
+                        </div>
+                        <div class="form-group">
+                            <p id="add-team-error" class="text-danger" style="display: none;"></p> <!-- 显示错误消息 -->
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button id="save-team-btn" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 增加团队成员的弹窗 -->
+    <div class="modal" id="addTeamMemberModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">新增团队成员</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 表单-->
+                    <form id="add-team-member-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="teamname">所属团队名称:</label>
+                            <input type="text" class="form-control" id="teamname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-MIB-ID">MIB ID:</label>
+                            <input type="text" class="form-control" id="member-MIB-ID" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-student-id">学生 ID:</label>
+                            <input type="text" class="form-control" id="member-student-id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-name">学生姓名:</label>
+                            <input type="text" class="form-control" id="member-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-email">学生邮箱:</label>
+                            <input type="email" class="form-control" id="member-email" required>
+                        </div>
+                        <div class="form-group">
+                            <p id="add-team-member-error" class="text-danger" style="display: none;"></p>
+                            <!-- 显示错误消息 -->
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button id="save-team-member-btn" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 在页面底部添加按钮 -->
+    <div class="container">
+        <button id="add-team-btn" class="btn btn-primary">新增团队</button>
+        <button id="add-team-member-btn" class="btn btn-primary">新增团队成员</button>
+    </div>
+
+
     <canvas class="Canvas" id="Canvas"></canvas>
 
     <script>
-        window.onload = function () {
-            // 初始化 "Particles" 插件
-            var particlesConfig = {
-                selector: "#Canvas", // 你的 canvas 元素的 CSS 选择器
-                maxParticles: 300, // 粒子的最大数量
-                sizeVariations: 3, // 粒子大小的变化量
-                speed: 0.5, // 粒子的移动速度
-                color: [
-                    "#FFD700", // 金色
-                    "#FF8C00", // 橙色
-                    "#7FFF00", // 鹦鹉绿
-                    "#FF00FF", // 紫红色
-                    "#FFFF00", // 黄色
-                    "#00FF00", // 酸橙色
-                    "#FF1493", // 深粉色
-                    "#00BFFF", // 深天蓝
-                    "#FF4500", // 番茄红
-                    "#FFA500", // 橙色
-                    "#00FFFF", // 青色
-                    "#FFC0CB", // 粉红色
-                    "#FFFFE0", // 浅黄色
-                    "#F0E68C", // 卡其色
-                    "#F08080", // 淡珊瑚色
-                ],
-                // 粒子和连接线的颜色，也可以是一个包含多个颜色的数组
-                minDistance: 80, // 连接线的最小距离（像素）
-                connectParticles: true, // 是否绘制连接线，true 表示绘制连接线，false 表示不绘制连接线
-                responsive: [
-                    // 响应式配置，根据不同的屏幕宽度应用不同的配置
-                    {
-                        breakpoint: 768, // 屏幕宽度小于等于 768px 时应用的配置
-                        options: {
-                            maxParticles: 50,
-                            speed: 0.3,
-                        },
-                    },
-                    {
-                        breakpoint: 480, // 屏幕宽度小于等于 480px 时应用的配置
-                        options: {
-                            maxParticles: 30,
-                            speed: 0.2,
-                        },
-                    },
-                ],
-            };
-            Particles.init(particlesConfig);
-        };
+        // 在这个位置获取并设置CSRF token
+        const csrftoken = getCookie('csrftoken');
 
-        // 使用 jQuery 发送 AJAX 请求获取团队信息
-        $.ajax({
-            url: '/api/get_teams_info/',
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                var team_list = data;
-                var team_container = $('#team-container');
+        fetchTeams();
 
-                for (var i = 0; i < team_list.length; i++) {
-                    var team = team_list[i];
-                    var info = '<div class="col-lg-4 col-md-6">' +
-                        '<div class="team-card">' +
-                        '<h2>' + team.name + '</h2>' +
-                        '</div>' +
-                        '</div>';
-                    team_container.append(info);
-                }
-            },
-            error: function (error) {
-                console.error('Error:', error);
-            }
+        // 在页面加载完成时调用函数
+        $(document).ready(function () {
+            handleAddTeam(); // 调用函数以设置按钮点击事件
+            handleAddTeamMember();
         });
 
     </script>

@@ -81,3 +81,15 @@ a button {
 a button:hover {
     background-color: #007A8B;
 }
+.captcha {
+    width: 20%;
+}
+.captcha_nav {
+    display: flex;
+}
+
+#id_captcha_1 {
+    margin: 0%;
+    margin-left: 2%;
+    width: 70%;
+}

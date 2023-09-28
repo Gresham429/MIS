@@ -15,55 +15,56 @@
 <body>
     {% include '../nav/navbar.html' %}
 
-    <!-- 添加排序方式的下拉选择框和搜索框 -->
-    <div class="container mt-5">
-        <h2>设备信息</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <label for="sort-select">选择排序方式：</label>
-                <select id="sort-select" class="form-control" onchange="sortDevices()">
-                    <option value="name">按名称排序</option>
-                    <option value="total_quantity">按数量排序</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label for="search-input">搜索设备：</label>
-                <input type="text" id="search-input" class="form-control" oninput="searchDevices()"
-                    placeholder="请输入设备名称或型号">
-            </div>
-        </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>物资名称</th>
-                    <th>型号</th>
-                    <th>数量</th>
-                </tr>
-            </thead>
-            <tbody id="devices-list">
-                <!-- 设备信息会动态添加到这里 -->
-            </tbody>
-        </table>
-    </div>
-
-
-    <!-- modal元素 -->
-    <div class="modal" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">设备详细信息</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div class="container">
+        <!-- 添加排序方式的下拉选择框和搜索框 -->
+        <div class="mt-5">
+            <h2>设备信息</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="sort-select">选择排序方式：</label>
+                    <select id="sort-select" class="form-control" onchange="sortDevices()">
+                        <option value="name">按名称排序</option>
+                        <option value="total_quantity">按数量排序</option>
+                    </select>
                 </div>
-                <div class="modal-body">
-                    <!-- 这里显示设备详细信息 -->
+                <div class="col-md-6">
+                    <label for="search-input">搜索设备：</label>
+                    <input type="text" id="search-input" class="form-control" oninput="searchDevices()"
+                        placeholder="请输入设备名称或型号">
                 </div>
             </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>物资名称</th>
+                        <th>型号</th>
+                        <th>数量</th>
+                    </tr>
+                </thead>
+                <tbody id="devices-list">
+                    <!-- 设备信息会动态添加到这里 -->
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- modal元素 -->
+        <div class="modal" id="myModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">设备详细信息</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 这里显示设备详细信息 -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
 
     <script>
         // 弹窗处理函数

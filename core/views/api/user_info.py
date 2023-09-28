@@ -59,4 +59,22 @@ def update_user_info(request):
     else:
         return JsonResponse({'error': 'Invalid request method'})
 
+@login_required(login_url='sign_in')
+def verify_email(request):
+    if request.method == 'POST':
+        user : User = request.user
+        ordinary_user : OrdinaryUser = OrdinaryUser.objects.filter(user=user).first()
+        email = request.POST.get('email')
+        verificationCode = request.POST.get('verification_code')
 
+        # 收到前端发来验证码的时候则验证，否则发送验证码
+        if verificationCode:
+            if ordinary_user.verify_email(verificationCode):
+                user.email= email
+                user.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False})
+        
+        ordinary_user.send_verification_email(email)
+        return JsonResponse({'success': True})

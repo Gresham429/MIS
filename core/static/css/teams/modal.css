@@ -1,0 +1,23 @@
+.my-modal {
+    /* 修改背景颜色 */
+    background-color: #f2f2f2;
+  
+    /* 修改宽度 */
+    width: 500px;
+  
+    /* 去除圆角 */
+    border-radius: 0;
+  }
+  
+  .my-modal .modal-header {
+    /* 修改标题颜色 */
+    color: #333;
+  }
+  
+  .my-modal .modal-footer {
+    /* 修改底部背景颜色 */
+    background-color: #f2f2f2;
+  
+    /* 去除边框 */
+    border: none;
+  }

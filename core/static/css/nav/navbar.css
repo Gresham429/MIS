@@ -4,13 +4,6 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
     padding: 0;
 }  
 
-.nav_right {
-    position: relative;
-    width: 10%;
-    margin-right: 4%;
-}
-
-
 .navbar {
     position: relative;
     z-index: 100;
@@ -22,6 +15,12 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
     display: flex;
     justify-content: space-between; /* 将导航栏的内容分散对齐，按钮在右侧 */
     align-items: center; /* 内部元素在交叉轴上居中对齐 */
+}
+
+.navbar a {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .navbar ul {
@@ -43,46 +42,52 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 
 .nav_left a {
     color: white;
-}
-.navbar a {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 30px;
-    font-weight: bold;
     font-style: italic;
     transition: 0.2s; /* 添加平滑过渡效果 */
-    text-decoration: none;
+    font-size: 30px;
 }
 
-.navbar a:hover {
+.nav_left a:hover {
     transform: scale(1.2); /*鼠标悬停文字放大*/
 }
 
+.nav_right {
+    position: relative;
+    width: 220px;
+    height: 80px;
+    margin-right: 4%;
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    justify-content: center;
+}
+
+.nav_right a {
+
+    display: flex; /* 使用 Flex 布局 */
+    justify-content: center;
+    align-items: center; /* 垂直居中 */
+    
+}
+
 .loginButton_a {
-    margin-top: 7%;
-    margin-right: 6%;
-   
+    font-size: 1.1rem;
+    margin: 0.5rem;
 }
 
 .registerButton_a {
-    margin-top: 7%;
-    margin-right: 2%;
+    font-size: 1.1rem;
+    margin: 0.5rem;
 }
 
 #loginButton {
-    width: 60px; 
-    height: 30px;
-    margin-bottom: 8%;
-    margin-right: 4%;
+    width: 4.5rem;
+    height: 2.5rem;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 18px; /* 设置按钮四角圆滑 */
     transition: 0.2s; /* 添加平滑过渡效果 */
-    border-radius: 15px; /* 设置按钮四角圆滑 */
-    /* 使用 transform 属性来等比例扩大盒子 */
-    transform: scale(1.2);
-    /* 设置变换的原点，这里设置为左上角 */
-    transform-origin: 0 0;
 }
 
 #loginButton:hover {
@@ -90,19 +95,14 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 }
 
 #registerButton {
-    width: 60px; /* 设置按钮宽度 */
-    height: 30px; /* 设置按钮高度 */
-    margin-bottom: 8%;
+    width: 4.5rem;
+    height: 2.5rem;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 18px; /* 设置按钮四角圆滑 */
     transition: 0.2s; /* 添加平滑过渡效果 */
-    border-radius: 15px; /* 设置按钮四角圆滑 */
-    /* 使用 transform 属性来等比例扩大盒子 */
-    transform: scale(1.2);
-    /* 设置变换的原点，这里设置为左上角 */
-    transform-origin: 0 0;
 }
 
 #registerButton:hover {

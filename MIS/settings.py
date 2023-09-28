@@ -10,12 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-import os
+import os, sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#追加导包路径（reason：修改django认证模型类，必须以 应用名.模型名）
+# sys.path.insert(0, os.path.join(BASE_DIR, 'MIS/smsapps'))
+# print(sys.path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -31,6 +34,15 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'  # 使用本地主机作为 SMTP 服务器
+EMAIL_PORT = 587  # SMTP 服务器端口号，通常是 587
+EMAIL_USE_TLS = True  # 使用 TLS 加密
+EMAIL_HOST_USER = '1543732388@qq.com'  # 发件人邮箱
+EMAIL_HOST_PASSWORD = 'vviroapcczfrbagf'  # 发件人邮箱的密码或授权码
+DEFAULT_FROM_EMAIL = '1543732388@qq.com'  # 默认的发件人邮箱
+
+
 
 # Application definition
 
@@ -44,8 +56,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
+    'captcha',
+    'smsapps.apps.UsersConfig',
     'myapp_hzx',
+    
 ]
 
 CHANNEL_LAYERS = {

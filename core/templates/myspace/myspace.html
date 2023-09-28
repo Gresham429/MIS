@@ -14,24 +14,28 @@
 
     <!-- Add Font Awesome (https://fontawesome.com/) to use the pencil icon -->
     <script src="https://kit.fontawesome.com/38f65d67a3.js" crossorigin="anonymous"></script>
+
 <body>
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-3">
                 <img id="avatar" class="avatar-img mx-auto d-block mb-3" src="" alt="Avatar">
                 <h1 class="text-center" id="username"></h1>
-                <p class="text-center">个性签名：<span id="signature"></span> <i class="fas fa-pencil-alt edit-icon" data-field="signature"></i></p>
+                <p class="text-center">个性签名：<span id="signature"></span> <i class="fas fa-pencil-alt edit-icon"
+                        data-field="signature"></i></p>
             </div>
             <div class="col-md-9">
                 <h2>个人信息</h2>
-                
+
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>生日：</strong><span id="birthday"></span> <i class="fas fa-pencil-alt edit-icon" data-field="birthday"></i></p>
+                        <p><strong>生日：</strong><span id="birthday"></span> <i class="fas fa-pencil-alt edit-icon"
+                                data-field="birthday"></i></p>
                         <p id="birthday-error" style="color: red; display: none;">生日日期格式错误，请使用YYYY-MM-DD格式。</p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong>电子邮箱：</strong><span id="email"></span> <i class="fas fa-pencil-alt edit-icon" data-field="email"></i></p>
+                        <p><strong>电子邮箱：</strong><span id="email"></span> <i class="fas fa-pencil-alt edit-icon"
+                                data-field="email"></i></p>
                     </div>
                 </div>
 
@@ -79,6 +83,37 @@
                 .catch(error => console.error('Error:', error));
         }
 
+        function verify_email(email) {
+            // 弹出输入框让用户输入验证码
+            var verificationCode = prompt('请输入验证码：');
+
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('verification_code', verificationCode);
+
+            // 将验证码发送给后端进行验证
+            fetch('/api/verify_email/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}', // Add CSRF token header
+                },
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('邮箱绑定成功！');
+                        return true;
+                    } else {
+                        alert('邮箱绑定失败！验证码不正确或已过期。');
+                        return false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
         // Function to toggle editing mode
         function toggleEdit(field) {
             const input = document.createElement('input');
@@ -99,7 +134,31 @@
 
             // Add event listener to input element to save changes when focus is lost
             input.addEventListener('blur', function () {
-                updateUserInfo(field);
+                if (field === 'email') {
+                    const value = document.getElementById(field).value;
+                    const formData = new FormData();
+                    formData.append(field, value);
+
+                    fetch('/api/verify_email/', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}', // Add CSRF token header
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                if (verify_email(value) === false) return;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+
+                } else {
+                    updateUserInfo(field);
+                }
             });
         }
 
@@ -137,7 +196,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
+    </head>
 
 </body>
 
