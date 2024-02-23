@@ -1,0 +1,23 @@
+{
+    "jwt_secret": "",
+    "database": {
+        "host": "",
+        "user": "",
+        "password": "",
+        "db_name": "",
+        "port": ""
+    },
+    "redis": {
+        "addr": "",
+        "password": "",
+        "db_index": 0
+    },
+    "smtp": {
+        "host": "",
+        "port": 587,
+        "from": "",
+        "password": "",
+        "nickname": ""
+    },
+    "web_port": ""
+}

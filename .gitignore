@@ -1,0 +1,4 @@
+backend/go.sum
+backend/config.json
+redis/
+postgres/
