@@ -6,38 +6,40 @@ import (
 
 // Post - 帖子
 type Post struct {
-	PostID     uint   `gorm:"primaryKey;column:post_id"`
-	Content    string `gorm:"column:content"`
-	Author     string `gorm:"column:author"`
-	NodeID     uint   `gorm:"column:node"`
-	CreateTime string `gorm:"column:create_time"`
-	Likes      uint   `gorm:"column:likes"`
+	PostID      uint   `gorm:"primaryKey;column:post_id"`
+	Content     string `gorm:"column:content"`
+	Author      string `gorm:"column:author"`
+	NodeID      uint   `gorm:"column:node_id"`
+	CreateTime  time.Time `gorm:"column:create_time"`
+	LikesNum    uint   `gorm:"column:likes"`
+	CommentsNum uint   `gorm:"column:comments_num"`
 }
 
 // 获取当前时间并返回格式化后的字符串
-func getCurrentTime() string {
+func getCurrentTime() time.Time {
 	currentTime := time.Now()
-	return currentTime.Format("2006-01-02 15:04:05") // 格式化时间为"年-月-日 时:分:秒"
+	return currentTime
 }
 
 // 创建一个帖子
 func CreatePost(content string, author string, nodeID uint) (uint, error) {
 	newPost := Post{
-		Content:    content,
-		Author:     author,
-		NodeID:     nodeID,
-		CreateTime: getCurrentTime(),
-		Likes:      0,
+		Content:     content,
+		Author:      author,
+		NodeID:      nodeID,
+		CreateTime:  getCurrentTime(),
+		LikesNum:    0,
+		CommentsNum: 0,
 	}
 
-    // 将新帖子添加到数据库
-    result := DB.Create(&newPost)
-    if result.Error != nil {
-        return 0, result.Error
-    }
+	// 将新帖子添加到数据库
+	result := DB.Create(&newPost)
+	if result.Error != nil {
+		return 0, result.Error
+	}
 
-    // 返回新帖子的 postID
-    return newPost.PostID, nil
+	// 返回新帖子的 postID
+	return newPost.PostID, nil
 }
 
 // 读取帖子信息
@@ -63,11 +65,35 @@ func DeletePost(postID uint) error {
 	return result.Error
 }
 
+// 按照回复数量排序读取摸个节点下的帖子列表，并作分页处理
+func GetPostsByCommentsNum(nodeID uint, page int, pageSize int) ([]Post, error) {
+	var posts []Post
+	result := DB.Where("node_id = ?", nodeID).Order("comments_num desc").Offset((page - 1) * pageSize).Limit(pageSize).Find(&posts)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return posts, nil
+}
+
+// 按照时间排序读取摸个节点下的帖子列表，并作分页处理
+func GetPostsByTime(nodeID uint, page int, pageSize int) ([]Post, error) {
+	var posts []Post
+	result := DB.Where("node_id = ?", nodeID).Order("create_time desc").Offset((page - 1) * pageSize).Limit(pageSize).Find(&posts)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return posts, nil
+}
+
 // MentionInPosts - 提到的用户
 type MentionInPost struct {
 	MentionInPostID uint   `gorm:"primaryKey;column:MentionInPost_id"`
-	PostID    uint   `gorm:"column:post_id"`
-	Username  string `gorm:"column:username"`
+	PostID          uint   `gorm:"column:post_id"`
+	Username        string `gorm:"column:username"`
 }
 
 // 创建提到的用户
@@ -110,11 +136,11 @@ func GetMentionInPostedUsers(postID uint) ([]string, error) {
 
 // Comments - 评论
 type Comment struct {
-	CommentID uint   `gorm:"primaryKey;column:comment_id"`
-	PostID    uint   `gorm:"column:post_id"`
-	Username  string `gorm:"column:username"`
-	Content   string `gorm:"column:content"`
-	CreateTime string `gorm:"column:create_time"`
+	CommentID  uint   `gorm:"primaryKey;column:comment_id"`
+	PostID     uint   `gorm:"column:post_id"`
+	Username   string `gorm:"column:username"`
+	Content    string `gorm:"column:content"`
+	CreateTime time.Time `gorm:"column:create_time"`
 }
 
 // 创建评论

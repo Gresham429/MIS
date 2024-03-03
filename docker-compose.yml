@@ -15,7 +15,7 @@ services:
       - backend
 
   backend:
-    image: backend:1.0.1
+    image: backend:1.0.2
     container_name: Backend
     build: 
       context: ./backend

@@ -13,4 +13,6 @@ func InitPost(g *echo.Group) {
 	g.POST("/publish_comment", controller.PublishComment)
 	g.DELETE("/delete_comment", controller.DeleteComment)
 	g.GET("/get_comment_list/:post_id", controller.GetCommentList)
+	g.GET("/get_posts_by_comments_num/:node_id", controller.GetPostListByCommentsNum)
+	g.GET("/get_posts_by_time/:node_id", controller.GetPostListByTime)
 }

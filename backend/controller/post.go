@@ -149,7 +149,77 @@ func PublishComment(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
 	}
 
+	// 获取帖子信息
+	post, err := model.GetPostInfo(uint(postID))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
+	// 更新评论数量
+	post.CommentsNum++
+	if err := model.UpdatePost(post); err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
 	return c.JSON(http.StatusCreated, Response{Message: "发布评论成功"})
+}
+
+// 按照回复数分页返回某个节点的帖子列表
+func GetPostListByCommentsNum(c echo.Context) error {
+	// 获取请求信息
+	nodeID, err := strconv.Atoi(c.Param("node_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, Response{Error: "node ID 不合法"})
+	}
+
+	// 获取页码
+	page, err := strconv.Atoi(c.QueryParam("page"))
+	if err != nil {
+		page = 1
+	}
+
+	// 获取每页的帖子数量
+	pageSize, err := strconv.Atoi(c.QueryParam("page_size"))
+	if err != nil {
+		pageSize = 10
+	}
+
+	// 获取帖子列表
+	posts, err := model.GetPostsByCommentsNum(uint(nodeID), page, pageSize)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, Response{Data: posts})
+}
+
+// 按照时间分页返回某个节点的帖子列表
+func GetPostListByTime(c echo.Context) error {
+	// 获取请求信息
+	nodeID, err := strconv.Atoi(c.Param("node_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, Response{Error: "node ID 不合法"})
+	}
+
+	// 获取页码
+	page, err := strconv.Atoi(c.QueryParam("page"))
+	if err != nil {
+		page = 1
+	}
+
+	// 获取每页的帖子数量
+	pageSize, err := strconv.Atoi(c.QueryParam("page_size"))
+	if err != nil {
+		pageSize = 10
+	}
+
+	// 获取帖子列表
+	posts, err := model.GetPostsByTime(uint(nodeID), page, pageSize)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, Response{Data: posts})
 }
 
 type deleteCommentRequest struct {
