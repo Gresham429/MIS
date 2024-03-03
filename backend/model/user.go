@@ -13,8 +13,6 @@ type User struct {
 	UserName string `gorm:"primaryKey;unique;column:user_name"`
 	Password string `gorm:"column:password"`
 	Email    string `gorm:"column:email"`
-
-	// 可为空字段
 	FullName string `gorm:"column:full_name,default:NULL"`
 	Address  string `gorm:"column:address,default:NULL"`
 }

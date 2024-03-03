@@ -4,6 +4,7 @@ import (
 	"MIS/config"
 	"MIS/model"
 	"MIS/router"
+	m "MIS/middleware"
 	logger "MIS/log"
 	"net/http"
 	"os"
@@ -29,6 +30,12 @@ func startWeb() {
 
 	gUser := gAPI.Group("/user")
 	router.InitUser(gUser)
+
+	// 使用 JWT 身份鉴权
+	gAPI.Use(m.JwtMiddleware)
+
+	gPost := gAPI.Group("/post")
+	router.InitPost(gPost)
 
 	logger.Logger.Fatal(e.Start(":" + config.JsonConfiguration.WebPort))
 }

@@ -20,7 +20,7 @@ type registerRequest struct {
 func Register(c echo.Context) error {
 	registerUser := new(registerRequest)
 	if err := c.Bind(registerUser); err != nil {
-		return c.JSON(http.StatusBadRequest, Response{Error: "Invalid JSON type"})
+		return c.JSON(http.StatusBadRequest, Response{Error: "请求的 JSON 格式错误"})
 	}
 
 	if registerUser.UserName == "" || registerUser.Password == "" {
@@ -155,7 +155,7 @@ func UpdateUserInfo(c echo.Context) error {
 	// 从请求中获得需要更新的用户信息
 	updatedInfo := new(updateRequest)
 	if err := c.Bind(updatedInfo); err != nil {
-		return c.JSON(http.StatusBadRequest, Response{Error: "Invalid JSON type"})
+		return c.JSON(http.StatusBadRequest, Response{Error: "请求的 JSON 格式错误"})
 	}
 
 	// 当 JSON 中存在以下信息之一时，更新 user
