@@ -7,7 +7,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./frontpage:/usr/share/nginx/html/templates:ro
     networks:
       - backend_network
@@ -15,7 +15,7 @@ services:
       - backend
 
   backend:
-    image: backend:1.0.0
+    image: backend:1.0.1
     container_name: Backend
     build: 
       context: ./backend
