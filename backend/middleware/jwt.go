@@ -13,6 +13,13 @@ import (
 
 func JwtMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
+		// 跳过不需要验证的路径
+		for _, path := range config.JsonConfiguration.SkipPaths {
+			if path == c.Path() {
+				return next(c)
+			}
+		}
+
 		// 获得 JWT token string
 		authorization := strings.Split(c.Request().Header.Get("Authorization"), " ")
 

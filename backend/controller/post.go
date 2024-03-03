@@ -16,8 +16,13 @@ type createPostRequest struct {
 
 // PublishPost - 发布帖子
 func PublishPost(c echo.Context) error {
-	// 获取用户信息
-	username := c.Get("username").(string)
+	// 获取用户名
+	username, ok := c.Get("username").(string)
+
+	if !ok {
+		// 类型断言失败，处理错误
+		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
+	}
 
 	// 获取请求信息
 	req := new(createPostRequest)
@@ -50,8 +55,14 @@ type deletePostRequest struct {
 
 // DeletePost - 删除帖子
 func DeletePost(c echo.Context) error {
-	// 获取用户信息
-	username := c.Get("username").(string)
+	// 获取用户名
+	username, ok := c.Get("username").(string)
+
+	if !ok {
+		// 类型断言失败，处理错误
+		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
+	}
+
 
 	// 获取请求信息
 	req := new(deletePostRequest)
@@ -111,8 +122,14 @@ type createCommentRequest struct {
 
 // PublishComment - 发布评论
 func PublishComment(c echo.Context) error {
-	// 获取用户信息
-	username := c.Get("username").(string)
+	// 获取用户名
+	username, ok := c.Get("username").(string)
+
+	if !ok {
+		// 类型断言失败，处理错误
+		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
+	}
+
 
 	// 获取 postID
 	postID, err := strconv.Atoi(c.Param("post_id"))
@@ -141,8 +158,14 @@ type deleteCommentRequest struct {
 
 // DeleteComment - 删除评论
 func DeleteComment(c echo.Context) error {
-	// 获取用户信息
-	username := c.Get("username").(string)
+	// 获取用户名
+	username, ok := c.Get("username").(string)
+
+	if !ok {
+		// 类型断言失败，处理错误
+		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
+	}
+
 
 	// 获取请求信息
 	req := new(deleteCommentRequest)

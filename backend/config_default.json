@@ -19,5 +19,11 @@
         "password": "",
         "nickname": ""
     },
-    "web_port": ""
+    "web_port": "",
+    "skip_paths": [
+        "/api/user/login",
+        "/api/user/register",
+        "/api/user/login_with_email",
+        "/api/user/send_verification_code"
+    ]
 }

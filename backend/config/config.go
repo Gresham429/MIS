@@ -33,6 +33,7 @@ type Conf struct {
 	RDB       Redis    `json:"redis"`
 	Smtp      SMTP     `json:"smtp"`
 	WebPort   string   `json:"web_port"`
+	SkipPaths []string `json:"skip_paths"`
 }
 
 var JsonConfiguration Conf = Conf{}

@@ -108,14 +108,15 @@ type userInfoResponse struct {
 
 // GetUser - 获取用户信息（需要JWT身份验证）
 func GetUserInfo(c echo.Context) error {
-	userName, ok := c.Get("username").(string)
+	// 获取用户名
+	username, ok := c.Get("username").(string)
 
 	if !ok {
 		// 类型断言失败，处理错误
 		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
 	}
 
-	userInfo, err := model.GetUserInfo(userName)
+	userInfo, err := model.GetUserInfo(username)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
@@ -140,14 +141,15 @@ type updateRequest struct {
 
 // UpdateUserInfo - 更新用户信息（需要JWT身份验证）
 func UpdateUserInfo(c echo.Context) error {
-	userName, ok := c.Get("username").(string)
+	// 获取用户名
+	username, ok := c.Get("username").(string)
 
 	if !ok {
 		// 类型断言失败，处理错误
 		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
 	}
 
-	userInfo, err := model.GetUserInfo(userName)
+	userInfo, err := model.GetUserInfo(username)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -190,14 +192,15 @@ func UpdateUserInfo(c echo.Context) error {
 
 // DeleteUser - 删除用户（需要JWT身份验证）
 func DeleteUser(c echo.Context) error {
-	userName, ok := c.Get("username").(string)
+	// 获取用户名
+	username, ok := c.Get("username").(string)
 
 	if !ok {
 		// 类型断言失败，处理错误
 		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
 	}
 
-	err := model.DeleteUser(userName)
+	err := model.DeleteUser(username)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, Response{Error: "删除用户失败"})
 	}
@@ -209,9 +212,9 @@ func DeleteUser(c echo.Context) error {
 func SendVerificationCode(c echo.Context) error {
 	ctx := c.Request().Context()
 	email := c.QueryParam("email")
-	userName := c.QueryParam("username")
+	username := c.QueryParam("username")
 
-	if email == "" || userName == "" {
+	if email == "" || username == "" {
 		return c.JSON(http.StatusBadRequest, Response{Error: "param 参数缺失"})
 	}
 
@@ -228,7 +231,7 @@ func SendVerificationCode(c echo.Context) error {
 	verificationCode := auth.GenerateVerificationCode()
 
 	// 在这里发送邮件，使用生成的验证码
-	err = auth.SendEmail(email, verificationCode, userName)
+	err = auth.SendEmail(email, verificationCode, username)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
 	}
@@ -240,13 +243,21 @@ func SendVerificationCode(c echo.Context) error {
 }
 
 type registerEmailRequest struct {
-	UserName   string `json:"username"`
 	Email      string `json:"email"`
 	VerifyCode string `json:"verify_code"`
 }
 
 // RegisterEmail - 验证邮箱验证码
 func RegisterEmail(c echo.Context) error {
+	// 获取用户名
+	username, ok := c.Get("username").(string)
+
+	if !ok {
+		// 类型断言失败，处理错误
+		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
+	}
+
+	// 获取请求上下文
 	ctx := c.Request().Context()
 
 	request := new(registerEmailRequest)
@@ -271,7 +282,7 @@ func RegisterEmail(c echo.Context) error {
 	}
 
 	// 更新用户信息
-	updateUser, err := model.GetUserInfo(request.UserName)
+	updateUser, err := model.GetUserInfo(username)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}

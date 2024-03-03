@@ -26,13 +26,13 @@ func startWeb() {
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
 
+	// 使用 JWT 身份鉴权
+	e.Use(m.JwtMiddleware)
+
 	gAPI := e.Group("/api")
 
 	gUser := gAPI.Group("/user")
 	router.InitUser(gUser)
-
-	// 使用 JWT 身份鉴权
-	gAPI.Use(m.JwtMiddleware)
 
 	gPost := gAPI.Group("/post")
 	router.InitPost(gPost)
