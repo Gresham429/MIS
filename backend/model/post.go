@@ -2,17 +2,18 @@ package model
 
 import (
 	"time"
+	"errors"
 )
 
 // Post - 帖子
 type Post struct {
-	PostID      uint   `gorm:"primaryKey;column:post_id"`
-	Content     string `gorm:"column:content"`
-	Author      string `gorm:"column:author"`
-	NodeID      uint   `gorm:"column:node_id"`
+	PostID      uint      `gorm:"primaryKey;column:post_id"`
+	Content     string    `gorm:"column:content"`
+	Author      string    `gorm:"column:author"`
+	NodeID      uint      `gorm:"column:node_id"`
 	CreateTime  time.Time `gorm:"column:create_time"`
-	LikesNum    uint   `gorm:"column:likes"`
-	CommentsNum uint   `gorm:"column:comments_num"`
+	LikesNum    uint      `gorm:"column:likes"`
+	CommentsNum uint      `gorm:"column:comments_num"`
 }
 
 // 获取当前时间并返回格式化后的字符串
@@ -63,6 +64,17 @@ func UpdatePost(post *Post) error {
 func DeletePost(postID uint) error {
 	result := DB.Where("post_id = ?", postID).Delete(&Post{})
 	return result.Error
+}
+
+// 获取用户的帖子列表
+func GetUserPosts(username string) ([]Post, error) {
+	var posts []Post
+	result := DB.Where("author = ?", username).Find(&posts)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return posts, nil
 }
 
 // 按照回复数量排序读取摸个节点下的帖子列表，并作分页处理
@@ -136,10 +148,10 @@ func GetMentionInPostedUsers(postID uint) ([]string, error) {
 
 // Comments - 评论
 type Comment struct {
-	CommentID  uint   `gorm:"primaryKey;column:comment_id"`
-	PostID     uint   `gorm:"column:post_id"`
-	Username   string `gorm:"column:username"`
-	Content    string `gorm:"column:content"`
+	CommentID  uint      `gorm:"primaryKey;column:comment_id"`
+	PostID     uint      `gorm:"column:post_id"`
+	Username   string    `gorm:"column:username"`
+	Content    string    `gorm:"column:content"`
 	CreateTime time.Time `gorm:"column:create_time"`
 }
 
@@ -193,4 +205,74 @@ func GetComments(postID uint) ([]Comment, error) {
 func DeleteCommentsInPost(postID uint) error {
 	result := DB.Where("post_id = ?", postID).Delete(&Comment{})
 	return result.Error
+}
+
+// 用户点赞表（每个用户对每个帖子只能点赞一次）
+type Like struct {
+	LikeID   uint   `gorm:"primaryKey;column:like_id"`
+	PostID   uint   `gorm:"column:post_id"`
+	Username string `gorm:"column:username"`
+}
+
+// 点赞
+func CreateLike(postID uint, username string) error {
+	// 检查用户是否已经点赞
+	var like Like
+
+	result := DB.Where("post_id = ? AND username = ?", postID, username).First(&like)
+	if result.Error == nil {
+		// 用户已经点赞
+		return errors.New("用户已经点赞")
+	}
+
+	newLike := Like{
+		PostID:   postID,
+		Username: username,
+	}
+
+	// 将点赞信息添加到数据库
+	result = DB.Create(&newLike)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+// 取消点赞
+func DeleteLike(postID uint, username string) error {
+	result := DB.Where("post_id = ? AND username = ?", postID, username).Delete(&Like{})
+	
+	if result.Error != nil {
+		return errors.New("取消点赞失败")
+	}
+
+	return nil
+}
+
+// 删除帖子的所有点赞
+func DeleteLikesInPost(postID uint) error {
+	result := DB.Where("post_id = ?", postID).Delete(&Like{})
+	return result.Error
+}
+
+// 获得用户的喜欢列表
+func GetUserLikes(username string) ([]Post, error) {
+	var likes []Like
+	result := DB.Where("username = ?", username).Find(&likes)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	var posts []Post
+	for _, like := range likes {
+		post, err := GetPostInfo(like.PostID)
+		if err != nil {
+			return posts, err
+		}
+
+		posts = append(posts, *post)
+	}
+
+	return posts, nil
 }

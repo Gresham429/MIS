@@ -96,6 +96,11 @@ func DeletePost(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
 	}
 
+	// 删除帖子下的点赞
+	if err := model.DeleteLikesInPost(req.PostID); err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
 	return c.JSON(http.StatusOK, Response{Message: "删除帖子成功"})
 }
 
@@ -278,3 +283,77 @@ func GetCommentList(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, Response{Data: comments})
 }
+
+// LikePost - 点赞
+func LikePost(c echo.Context) error {
+	// 获取用户名
+	username, ok := c.Get("username").(string)
+
+	if !ok {
+		// 类型断言失败，处理错误
+		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
+	}
+
+	// 获取 postID
+	postID, err := strconv.Atoi(c.Param("post_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, Response{Error: "Invalid post ID"})
+	}
+
+	// 点赞
+	err = model.CreateLike(uint(postID), username)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
+	// 帖子点赞数加1
+	post, err := model.GetPostInfo(uint(postID))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
+	post.LikesNum++
+	if err := model.UpdatePost(post); err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, Response{Message: "点赞成功", Data: post.LikesNum})
+}
+
+// UnlikePost - 取消点赞
+func RemovelikePost(c echo.Context) error {
+	// 获取用户名
+	username, ok := c.Get("username").(string)
+
+	if !ok {
+		// 类型断言失败，处理错误
+		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
+	}
+
+	// 获取 postID
+	postID, err := strconv.Atoi(c.Param("post_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, Response{Error: "Invalid post ID"})
+	}
+
+	// 取消点赞
+	err = model.DeleteLike(uint(postID), username)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
+	// 帖子点赞数减1
+	post, err := model.GetPostInfo(uint(postID))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
+	post.LikesNum--
+	if err := model.UpdatePost(post); err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, Response{Message: "取消点赞成功", Data: post.LikesNum})
+}
+

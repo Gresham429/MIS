@@ -15,4 +15,6 @@ func InitUser(g *echo.Group) {
 	g.GET("/get_user_info", controller.GetUserInfo)
 	g.DELETE("/delete_user", controller.DeleteUser)
 	g.PUT("/update_user_info", controller.UpdateUserInfo)
+	g.GET("/get_user_likes", controller.GetUserLikes)
+	g.GET("/get_user_posts", controller.GetUserPosts)
 }

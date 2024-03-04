@@ -337,3 +337,39 @@ func LoginWithEmail(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, Response{Data: response})
 }
+
+// 获取用户的喜欢列表
+func GetUserLikes(c echo.Context) error {
+	// 获取用户名
+	username, ok := c.Get("username").(string)
+
+	if !ok {
+		// 类型断言失败，处理错误
+		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
+	}
+
+	posts, err := model.GetUserLikes(username)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, Response{Data: posts})
+}
+
+// 获取用户所发的帖子
+func GetUserPosts(c echo.Context) error {
+	// 获取用户名
+	username, ok := c.Get("username").(string)
+
+	if !ok {
+		// 类型断言失败，处理错误
+		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
+	}
+
+	posts, err := model.GetUserPosts(username)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, Response{Data: posts})
+}
