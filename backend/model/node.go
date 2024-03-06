@@ -30,3 +30,14 @@ func GetNodeInfo(nodeID uint) (*Node, error) {
 
 	return node, nil
 }
+
+// 读取所有节点信息
+func GetAllNodes() ([]Node, error) {
+	nodes := []Node{}
+	result := DB.Find(&nodes)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return nodes, nil
+}

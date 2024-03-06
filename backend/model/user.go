@@ -9,12 +9,14 @@ import (
 )
 
 type User struct {
-	ID       uint   `gorm:"primaryKey;unique;column:id"`
-	UserName string `gorm:"primaryKey;unique;column:user_name"`
-	Password string `gorm:"column:password"`
-	Email    string `gorm:"column:email"`
-	FullName string `gorm:"column:full_name,default:NULL"`
-	Address  string `gorm:"column:address,default:NULL"`
+	ID           uint   `gorm:"primaryKey;unique;column:id"`
+	UserName     string `gorm:"primaryKey;unique;column:user_name"`
+	Password     string `gorm:"column:password"`
+	Email        string `gorm:"column:email"`
+	FullName     string `gorm:"column:full_name,default:NULL"`
+	Address      string `gorm:"column:address,default:NULL"`
+	IsAdmin      bool   `gorm:"column:is_admin,default:false"`
+	IsSuperAdmin bool   `gorm:"column:is_superuser,default:false"`
 }
 
 // Create - 创建用户

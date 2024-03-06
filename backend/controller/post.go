@@ -57,12 +57,17 @@ type deletePostRequest struct {
 func DeletePost(c echo.Context) error {
 	// 获取用户名
 	username, ok := c.Get("username").(string)
-
 	if !ok {
 		// 类型断言失败，处理错误
 		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 user_name 转换为字符串"})
 	}
 
+	// 获取是否为管理员
+	IsAdmin, ok := c.Get("admin").(bool)
+	if !ok {
+		// 类型断言失败，处理错误
+		return c.JSON(http.StatusInternalServerError, Response{Error: "无法将 admin 转换为布尔值"})
+	}
 
 	// 获取请求信息
 	req := new(deletePostRequest)
@@ -77,7 +82,7 @@ func DeletePost(c echo.Context) error {
 	}
 
 	// 检查用户是否有权限删除帖子
-	if post.Author != username {
+	if post.Author != username && !IsAdmin {
 		return c.JSON(http.StatusForbidden, Response{Error: "无权限删除帖子"})
 	}
 

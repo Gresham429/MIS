@@ -22,11 +22,11 @@ type JwtCustomClaims struct {
 }
 
 // 生成 JWT Token
-func GenerateJWTToken(username string) (string, error) {
+func GenerateJWTToken(username string, IsAdmin bool) (string, error) {
 	// 设置 claims
 	claims := &JwtCustomClaims{
 		UserName: username,
-		Admin:    false,
+		Admin:    IsAdmin,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
 		},

@@ -50,6 +50,7 @@ func JwtMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		c.Set("username", claims.UserName)
+		c.Set("admin", claims.Admin)
 
 		return next(c)
 	}

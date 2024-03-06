@@ -89,7 +89,7 @@ func Login(c echo.Context) error {
 	}
 
 	// 生成 jwt 令牌
-	jwt, err := auth.GenerateJWTToken(user.UserName)
+	jwt, err := auth.GenerateJWTToken(user.UserName, user.IsAdmin || user.IsSuperAdmin)
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, Response{Error: err.Error()})
 	}
@@ -328,7 +328,7 @@ func LoginWithEmail(c echo.Context) error {
 	}
 
 	// 生成 jwt 令牌
-	jwt, err := auth.GenerateJWTToken(existingUser.UserName)
+	jwt, err := auth.GenerateJWTToken(existingUser.UserName, existingUser.IsAdmin || existingUser.IsSuperAdmin)
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, Response{Error: err.Error()})
 	}
