@@ -1,5 +1,4 @@
-backend/go.sum
-backend/config.json
-redis/redis_data/
-redis/redis_logs/
+api/go.sum
+api/config.json
+redis/
 postgres/
