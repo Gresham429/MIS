@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: Nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ../configs/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../web:/usr/share/nginx/html/templates:ro
+    networks:
+      - backend_network
+    depends_on:
+      - backend
+
+  backend:
+    image: backend:1.0.3
+    container_name: Backend
+    build: 
+      context: ../api/build
+      dockerfile: Dockerfile
+    environment:
+      - GOPROXY=https://goproxy.cn
+      - DATABASE_URL=postgresql://gresham:20040420@localhost:5432/MIS
+    volumes:
+      - ../api/config.json:/app/config.json:ro
+    ports:
+      - "1323:1323"  # 你的 Echo 应用端口
+    networks:
+      - backend_network
+    depends_on:
+      - db
+      - rdb
+
+  db:
+    container_name: Postgres
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"  # 将容器内部的 5432 端口映射到宿主机上的 5432 端口
+    environment:
+      POSTGRES_DB: MIS
+      POSTGRES_USER: gresham
+      POSTGRES_PASSWORD: 20040420
+    volumes:
+      - ../postgres:/var/lib/postgresql/data
+    networks:
+      - backend_network
+
+  rdb:
+    container_name: Redis
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"  # 将容器内部的 6379 端口映射到宿主机上的 6379 端口
+    volumes:
+      - ../redis/redis_data:/data
+      - ../redis/redis_logs:/logs
+      - ../configs/redis.conf:/usr/local/etc/redis/redis.conf
+    #配置文件启动
+    command: redis-server /usr/local/etc/redis/redis.conf --requirepass 20040420
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    driver: bridge
