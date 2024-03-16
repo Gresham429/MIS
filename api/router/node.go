@@ -7,7 +7,7 @@ import (
 )
 
 func InitNode(g *echo.Group) {
-	g.GET("/", controller.GetNodes)
-	g.POST("/", controller.CreateNode)
-	g.DELETE("/", controller.DeleteNode)
+	g.GET("", controller.GetNodes)
+	g.POST("", controller.CreateNode)
+	g.DELETE("", controller.DeleteNode)
 }

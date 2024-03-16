@@ -17,7 +17,7 @@ func InitUser(g *echo.Group) {
 	g.POST("/email_login", controller.LoginWithEmail)
 	g.POST("/email_verification_code", controller.SendVerificationCode)
 
-	g.DELETE("/", controller.DeleteUser)
+	g.DELETE("", controller.DeleteUser)
 
 	g.PUT("/info", controller.UpdateUserInfo)
 }
