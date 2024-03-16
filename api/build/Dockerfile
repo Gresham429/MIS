@@ -8,7 +8,7 @@ ENV GOPROXY=https://goproxy.cn
 WORKDIR /app
 
 # 复制项目文件到工作目录
-COPY . .
+COPY .. .
 
 # 编译项目
 RUN  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOARM=6 go build -o main .
