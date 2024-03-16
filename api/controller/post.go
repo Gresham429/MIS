@@ -174,6 +174,20 @@ func PublishComment(c echo.Context) error {
 	return c.JSON(http.StatusCreated, Response{Message: "发布评论成功"})
 }
 
+// GetPosts
+func GetPosts(c echo.Context) error {
+	// 获取排序方式
+	sortType := c.QueryParam("sortby")
+
+	if sortType == "time" {
+		return GetPostListByTime(c)
+	} else if sortType == "comments_num" {
+		return GetPostListByCommentsNum(c)
+	}
+
+	return c.JSON(http.StatusBadRequest, Response{Error: "错误的排序方式"})
+}
+
 // 按照回复数分页返回某个节点的帖子列表
 func GetPostListByCommentsNum(c echo.Context) error {
 	// 获取请求信息

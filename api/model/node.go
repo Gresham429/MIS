@@ -41,3 +41,13 @@ func GetAllNodes() ([]Node, error) {
 
 	return nodes, nil
 }
+
+// 删除节点
+func DeleteNode(nodeID uint) error {
+	result := DB.Delete(&Node{}, nodeID)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}

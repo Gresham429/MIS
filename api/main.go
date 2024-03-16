@@ -34,6 +34,9 @@ func startWeb() {
 	gUser := gAPI.Group("/user")
 	router.InitUser(gUser)
 
+	gNode := gAPI.Group("/node")
+	router.InitNode(gNode)
+
 	gPost := gAPI.Group("/post")
 	router.InitPost(gPost)
 

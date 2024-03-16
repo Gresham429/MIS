@@ -7,14 +7,17 @@ import (
 )
 
 func InitUser(g *echo.Group) {
+	g.GET("/info", controller.GetUserInfo)
+	g.GET("/likes", controller.GetUserLikes)
+	g.GET("/posts", controller.GetUserPosts)
+
 	g.POST("/register", controller.Register)
 	g.POST("/login", controller.Login)
-	g.POST("/login_with_email", controller.LoginWithEmail)
-	g.POST("/send_verification_code", controller.SendVerificationCode)
-	g.POST("/register_email", controller.RegisterEmail)
-	g.GET("/get_user_info", controller.GetUserInfo)
-	g.DELETE("/delete_user", controller.DeleteUser)
-	g.PUT("/update_user_info", controller.UpdateUserInfo)
-	g.GET("/get_user_likes", controller.GetUserLikes)
-	g.GET("/get_user_posts", controller.GetUserPosts)
+	g.POST("/email", controller.RegisterEmail)
+	g.POST("/email_login", controller.LoginWithEmail)
+	g.POST("/verification_code", controller.SendVerificationCode)
+
+	g.DELETE("/", controller.DeleteUser)
+
+	g.PUT("/info", controller.UpdateUserInfo)
 }
