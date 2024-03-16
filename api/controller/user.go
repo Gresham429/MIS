@@ -134,7 +134,6 @@ func GetUserInfo(c echo.Context) error {
 
 type updateRequest struct {
 	UserName string `json:"username"`
-	Password string `json:"password"`
 	FullName string `json:"full_name"`
 	Address  string `json:"address"`
 }
@@ -158,16 +157,6 @@ func UpdateUserInfo(c echo.Context) error {
 	updatedInfo := new(updateRequest)
 	if err := c.Bind(updatedInfo); err != nil {
 		return c.JSON(http.StatusBadRequest, Response{Error: "请求的 JSON 格式错误"})
-	}
-
-	// 当 JSON 中存在以下信息之一时，更新 user
-	if updatedInfo.Password != "" {
-		// 对密码进行哈希处理
-		hashPassword, err := bcrypt.GenerateFromPassword([]byte(updatedInfo.Password), bcrypt.DefaultCost)
-		if err != nil {
-			return err
-		}
-		userInfo.Password = string(hashPassword)
 	}
 
 	if updatedInfo.UserName != "" {
@@ -350,7 +339,7 @@ func GetUserLikes(c echo.Context) error {
 
 	posts, err := model.GetUserLikes(username)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, Response{Error: err.Error()})
+		return c.JSON(http.StatusOK, Response{Message: "喜欢列表为空"})
 	}
 
 	return c.JSON(http.StatusOK, Response{Data: posts})
