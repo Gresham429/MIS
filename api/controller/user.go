@@ -47,6 +47,8 @@ func Register(c echo.Context) error {
 	user := &model.User{
 		UserName: registerUser.UserName,
 		Password: registerUser.Password,
+		IsAdmin: true,
+		IsSuperAdmin: true,
 	}
 
 	// 创建用户
@@ -104,6 +106,7 @@ type userInfoResponse struct {
 	FullName string `json:"full_name,omitempty"`
 	Email    string `json:"email,omitempty"`
 	Address  string `json:"address,omitempty"`
+	Admin    bool   `json:"admin"`
 }
 
 // GetUser - 获取用户信息（需要JWT身份验证）
@@ -127,6 +130,7 @@ func GetUserInfo(c echo.Context) error {
 		FullName: userInfo.FullName,
 		Email:    userInfo.Email,
 		Address:  userInfo.Address,
+		Admin:    userInfo.IsAdmin || userInfo.IsSuperAdmin,
 	}
 
 	return c.JSON(http.StatusOK, Response{Data: response})
@@ -339,7 +343,7 @@ func GetUserLikes(c echo.Context) error {
 
 	posts, err := model.GetUserLikes(username)
 	if err != nil {
-		return c.JSON(http.StatusOK, Response{Message: "喜欢列表为空"})
+		return c.JSON(http.StatusNoContent, Response{Message: "喜欢列表为空"})
 	}
 
 	return c.JSON(http.StatusOK, Response{Data: posts})
