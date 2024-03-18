@@ -44,10 +44,10 @@ func startWeb() {
 }
 
 func main() {
-	args := os.Args
+	configPath := os.Getenv("CONFIG_PATH")
 
 	// 初始化配置
-	config.InitConfig(args[1])
+	config.InitConfig(configPath)
 
 	// 初始化日志
 	logger.InitLogger()

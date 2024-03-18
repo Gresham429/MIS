@@ -40,4 +40,4 @@ RUN chmod +x /app/main
 EXPOSE 1323
 
 # 运行应用
-CMD ["/app/main", "/app/config.json"]
+CMD ["/app/main"]
